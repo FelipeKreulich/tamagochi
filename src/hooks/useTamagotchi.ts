@@ -79,6 +79,7 @@ export interface TamagotchiApi {
     awardHappiness: (delta: number) => void;
     addCoins: (n: number) => void;
     pat: () => void;
+    rename: (name: string) => void;
     reset: () => void;
     setMuted: (muted: boolean) => void;
     setNotificationsEnabled: (enabled: boolean) => void;
@@ -261,6 +262,14 @@ export function useTamagotchi(): TamagotchiApi {
         ),
       pat: () =>
         applyToPet(patAction, (muted) => chirpHappy({ muted })),
+      rename: (name) => {
+        const trimmed = name.trim().slice(0, 12);
+        if (trimmed.length < 2) return;
+        applyToPet(
+          (p) => ({ ...p, name: trimmed }),
+          (muted) => beepSuccess({ muted })
+        );
+      },
       awardHappiness: (delta) =>
         applyToPet((p) =>
           p.isAlive && !p.isSleeping

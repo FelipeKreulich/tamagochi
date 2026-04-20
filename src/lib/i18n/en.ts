@@ -211,6 +211,9 @@ const dict: Dictionary = {
   },
   hud: {
     pet: "PET",
+    renameAria: "Rename pet",
+    renameTitle: "NEW NAME",
+    renameSave: "SAVE",
   },
   achievementsDialog: {
     title: "ACHIEVEMENTS",

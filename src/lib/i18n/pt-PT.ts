@@ -211,6 +211,9 @@ const dict: Dictionary = {
   },
   hud: {
     pet: "BICHINHO",
+    renameAria: "Renomear bichinho",
+    renameTitle: "NOVO NOME",
+    renameSave: "GUARDAR",
   },
   achievementsDialog: {
     title: "CONQUISTAS",

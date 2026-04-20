@@ -207,6 +207,9 @@ export interface Dictionary {
   };
   hud: {
     pet: string;
+    renameAria: string;
+    renameTitle: string;
+    renameSave: string;
   };
   achievementsDialog: {
     title: string;

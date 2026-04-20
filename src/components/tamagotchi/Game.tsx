@@ -44,6 +44,7 @@ import { LcdScreen } from "./LcdScreen";
 import { DpadButtons } from "./DpadButtons";
 import { AchievementsDialog } from "./AchievementsDialog";
 import { ParticleBurst, type ParticleKind } from "./Particles";
+import { RenameDialog } from "./RenameDialog";
 import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
 import { HistoryDialog } from "./HistoryDialog";
@@ -231,6 +232,7 @@ export function Game() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [daycareOpen, setDaycareOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [renameOpen, setRenameOpen] = useState(false);
   const [patBouncing, setPatBouncing] = useState(false);
   const lastPatAtRef = useRef(0);
   const [particle, setParticle] = useState<{
@@ -510,7 +512,7 @@ export function Game() {
       >
         {pet && (
           <aside className="order-2 lg:order-1 lg:col-start-1">
-            <HUD pet={pet} />
+            <HUD pet={pet} onRenameClick={() => setRenameOpen(true)} />
           </aside>
         )}
 
@@ -703,6 +705,15 @@ export function Game() {
 
       {evolvedStage && <EvolutionFlash stage={evolvedStage} />}
       {currentBanner && <AchievementBanner achievement={currentBanner} />}
+
+      {pet && (
+        <RenameDialog
+          open={renameOpen}
+          onOpenChange={setRenameOpen}
+          currentName={pet.name}
+          onSave={(name) => actions.rename(name)}
+        />
+      )}
 
       <Dialog open={graveyardOpen} onOpenChange={setGraveyardOpen}>
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-md">

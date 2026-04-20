@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Pencil } from "lucide-react";
 import type { Pet } from "@/lib/game/types";
 import { StatBar } from "./StatBar";
 import { useT } from "@/lib/i18n";
@@ -18,9 +19,10 @@ function formatAge(seconds: number): string {
 interface HUDProps {
   pet: Pet;
   className?: string;
+  onRenameClick?: () => void;
 }
 
-export function HUD({ pet, className }: HUDProps) {
+export function HUD({ pet, className, onRenameClick }: HUDProps) {
   const dict = useT();
   const [now, setNow] = useState<number>(() => pet.lastTickAt);
   useEffect(() => {
@@ -40,9 +42,22 @@ export function HUD({ pet, className }: HUDProps) {
         <p className="text-[8px] uppercase tracking-[0.3em] text-lcd-light/60">
           {dict.hud.pet}
         </p>
-        <p className="truncate text-sm uppercase tracking-widest text-accent-pink">
-          {pet.name}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="truncate text-sm uppercase tracking-widest text-accent-pink">
+            {pet.name}
+          </p>
+          {onRenameClick && pet.isAlive && (
+            <button
+              type="button"
+              onClick={onRenameClick}
+              aria-label={dict.hud.renameAria}
+              title={dict.hud.renameAria}
+              className="flex h-5 w-5 shrink-0 items-center justify-center border border-lcd-light/40 text-lcd-light/70 transition-colors hover:border-accent-pink hover:text-accent-pink"
+            >
+              <Pencil className="h-3 w-3" />
+            </button>
+          )}
+        </div>
         <div className="flex items-center justify-between text-[9px] uppercase tracking-widest">
           <span className="flex items-center gap-1 text-accent-cyan">
             {dict.stages[pet.stage]}
