@@ -19,6 +19,7 @@ describe("game types", () => {
       id: "abc",
       name: "Pixel",
       species: "blob",
+      variant: "normal",
       stage: "egg",
       mood: "happy",
       stats: {

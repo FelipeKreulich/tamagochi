@@ -37,6 +37,11 @@ const dict: Dictionary = {
     adult: "ADULTO",
     elder: "ANCIAO",
   },
+  variants: {
+    normal: "NORMAL",
+    mega: "MEGA",
+    dark: "DARK",
+  },
   moodStatus: {
     happy: "SE SENTINDO OTIMO",
     sad: "PARECE TRISTE...",
@@ -258,6 +263,14 @@ const dict: Dictionary = {
     legend: {
       title: "LENDA VIVA",
       description: "Um bichinho chegou aos 180 minutos de vida.",
+    },
+    megaEvolution: {
+      title: "MEGA EVOLUCAO",
+      description: "Cuidou tao bem que um bichinho virou MEGA.",
+    },
+    darkEvolution: {
+      title: "LADO SOMBRIO",
+      description: "Abandonou tanto que um bichinho virou DARK.",
     },
   },
   causes: {

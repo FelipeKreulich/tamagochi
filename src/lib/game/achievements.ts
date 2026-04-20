@@ -20,7 +20,9 @@ export type AchievementKey =
   | "nurse"
   | "cleanFreak"
   | "marathon"
-  | "legend";
+  | "legend"
+  | "megaEvolution"
+  | "darkEvolution";
 
 export interface AchievementDef {
   key: AchievementKey;
@@ -122,6 +124,20 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     key: "legend",
     id: "legend",
     check: (s) => !!s.pet && s.pet.ageMinutes >= 180,
+  },
+  {
+    key: "megaEvolution",
+    id: "mega-evolution",
+    check: (s) =>
+      (!!s.pet && s.pet.variant === "mega") ||
+      s.graveyard.some((g) => g.variant === "mega"),
+  },
+  {
+    key: "darkEvolution",
+    id: "dark-evolution",
+    check: (s) =>
+      (!!s.pet && s.pet.variant === "dark") ||
+      s.graveyard.some((g) => g.variant === "dark"),
   },
 ];
 

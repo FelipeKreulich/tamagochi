@@ -1,4 +1,5 @@
 export type Species = "blob" | "dino" | "cat";
+export type Variant = "normal" | "mega" | "dark";
 
 export type LifeStage =
   | "egg"
@@ -40,6 +41,7 @@ export interface Pet {
   id: string;
   name: string;
   species: Species;
+  variant: Variant;
   stage: LifeStage;
   mood: Mood;
   stats: Stats;
@@ -89,6 +91,7 @@ export interface GraveyardEntry {
   id: string;
   name: string;
   species: Species;
+  variant: Variant;
   bornAt: number;
   diedAt: number;
   ageMinutes: number;

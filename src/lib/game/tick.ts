@@ -13,6 +13,7 @@ import {
 import { addStats, criticalCount } from "./stats";
 import { ageSeconds, shouldDie, stageFromAge } from "./lifecycle";
 import { computeMood } from "./mood";
+import { computeVariant } from "./variant";
 import type { Pet, StatSample } from "./types";
 
 export interface TickEvents {
@@ -134,8 +135,23 @@ export function tickPet(pet: Pet, now = Date.now()): {
     lastSampleAt = now;
   }
 
+  // Branched evolution locks in at the moment the pet becomes an adult.
+  let variant = pet.variant;
+  if (
+    pet.variant === "normal" &&
+    pet.stage !== "adult" &&
+    nextStage === "adult"
+  ) {
+    variant = computeVariant({
+      ...pet,
+      stats: withHealth,
+      statsHistory,
+    });
+  }
+
   let nextPet: Pet = {
     ...pet,
+    variant,
     stats: withHealth,
     statsHistory,
     lastSampleAt,

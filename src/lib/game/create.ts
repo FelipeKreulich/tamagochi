@@ -14,6 +14,7 @@ export function createPet(params: {
     id: randomId(),
     name: params.name.trim().slice(0, 12) || "Bicho",
     species: params.species,
+    variant: "normal",
     stage: "egg",
     mood: "happy",
     stats: {
@@ -43,6 +44,7 @@ export function normalizePet(pet: Pet | null | undefined): Pet | null {
   if (!pet) return null;
   return {
     ...pet,
+    variant: pet.variant ?? "normal",
     counters: pet.counters ?? { ...EMPTY_COUNTERS },
     statsHistory: Array.isArray(pet.statsHistory) ? pet.statsHistory : [],
     lastSampleAt:

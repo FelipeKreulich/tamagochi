@@ -44,7 +44,15 @@ export function HUD({ pet, className }: HUDProps) {
           {pet.name}
         </p>
         <div className="flex items-center justify-between text-[9px] uppercase tracking-widest">
-          <span className="text-accent-cyan">{dict.stages[pet.stage]}</span>
+          <span className="flex items-center gap-1 text-accent-cyan">
+            {dict.stages[pet.stage]}
+            {pet.variant === "mega" && (
+              <span className="text-[#ffe14d]">★</span>
+            )}
+            {pet.variant === "dark" && (
+              <span className="text-[#ff2a4d]">☠</span>
+            )}
+          </span>
           <span className="text-lcd-light">{formatAge(ageSec)}</span>
         </div>
       </div>

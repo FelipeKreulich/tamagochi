@@ -41,6 +41,7 @@ export interface Dictionary {
     "egg" | "baby" | "child" | "teen" | "adult" | "elder",
     string
   >;
+  variants: Record<"normal" | "mega" | "dark", string>;
   moodStatus: Record<
     "happy" | "sad" | "sick" | "sleeping" | "hungry" | "dirty",
     string
@@ -204,6 +205,8 @@ export interface Dictionary {
     cleanFreak: { title: string; description: string };
     marathon: { title: string; description: string };
     legend: { title: string; description: string };
+    megaEvolution: { title: string; description: string };
+    darkEvolution: { title: string; description: string };
   };
   causes: {
     healthZero: string;

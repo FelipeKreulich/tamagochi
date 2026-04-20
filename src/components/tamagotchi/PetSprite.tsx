@@ -23,17 +23,47 @@ export function PetSprite({
   clickable,
 }: PetSpriteProps) {
   const stage = pet.stage === "egg" ? "egg" : "post-egg";
-  const { frames, palette } = getSpriteFor(pet.species, pet.mood, stage);
+  const { frames, palette } = getSpriteFor(
+    pet.species,
+    pet.mood,
+    stage,
+    pet.variant
+  );
 
   const interactive = !!onClick && !disabled;
 
+  const variantAura =
+    pet.variant === "mega"
+      ? "drop-shadow-[0_0_6px_rgba(255,225,77,0.6)]"
+      : pet.variant === "dark"
+      ? "drop-shadow-[0_0_6px_rgba(255,42,77,0.5)]"
+      : "";
+
   const inner = (
-    <Sprite
-      frames={frames}
-      palette={palette}
-      pixelSize={pixelSize}
-      frameDurationMs={pet.mood === "sleeping" ? 1200 : 420}
-    />
+    <div className={cn("relative", variantAura)}>
+      <Sprite
+        frames={frames}
+        palette={palette}
+        pixelSize={pixelSize}
+        frameDurationMs={pet.mood === "sleeping" ? 1200 : 420}
+      />
+      {pet.variant === "mega" && pet.stage !== "egg" && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 text-[14px] text-[#ffe14d] animate-[lcdflicker_0.8s_steps(2)_infinite]"
+        >
+          ★
+        </span>
+      )}
+      {pet.variant === "dark" && pet.stage !== "egg" && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 text-[14px] text-[#ff2a4d] animate-[lcdflicker_0.6s_steps(2)_infinite]"
+        >
+          ☠
+        </span>
+      )}
+    </div>
   );
 
   return (
