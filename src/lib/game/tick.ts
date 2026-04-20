@@ -7,11 +7,13 @@ import {
   POOP_VARIANCE_SECONDS,
   SICK_HEALTH_DECAY,
   SLEEP_ENERGY_GAIN,
+  STATS_HISTORY_MAX,
+  STATS_SAMPLE_INTERVAL_MS,
 } from "./constants";
 import { addStats, criticalCount } from "./stats";
 import { ageSeconds, shouldDie, stageFromAge } from "./lifecycle";
 import { computeMood } from "./mood";
-import type { Pet } from "./types";
+import type { Pet, StatSample } from "./types";
 
 export interface TickEvents {
   evolved: boolean;
@@ -116,9 +118,27 @@ export function tickPet(pet: Pet, now = Date.now()): {
     events.evolved = true;
   }
 
+  // Stats sampling (throttled)
+  let statsHistory = pet.statsHistory;
+  let lastSampleAt = pet.lastSampleAt;
+  if (now - pet.lastSampleAt >= STATS_SAMPLE_INTERVAL_MS) {
+    const sample: StatSample = {
+      t: now,
+      hunger: Math.round(withHealth.hunger),
+      happiness: Math.round(withHealth.happiness),
+      energy: Math.round(withHealth.energy),
+      hygiene: Math.round(withHealth.hygiene),
+      health: Math.round(withHealth.health),
+    };
+    statsHistory = [...statsHistory, sample].slice(-STATS_HISTORY_MAX);
+    lastSampleAt = now;
+  }
+
   let nextPet: Pet = {
     ...pet,
     stats: withHealth,
+    statsHistory,
+    lastSampleAt,
     isSleeping,
     poopCount,
     stage: nextStage,

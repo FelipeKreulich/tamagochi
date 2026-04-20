@@ -44,7 +44,9 @@ import { DpadButtons } from "./DpadButtons";
 import { AchievementsDialog } from "./AchievementsDialog";
 import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
+import { HistoryDialog } from "./HistoryDialog";
 import { EvolutionFlash } from "./EvolutionFlash";
+import { LineChart } from "lucide-react";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
 import { hasEvolved } from "@/lib/game/lifecycle";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
@@ -64,6 +66,7 @@ function StatusPanel({
   graveyardCount,
   onOpenGraveyard,
   onOpenAchievements,
+  onOpenHistory,
   dict,
 }: {
   achievementCount: number;
@@ -71,6 +74,7 @@ function StatusPanel({
   graveyardCount: number;
   onOpenGraveyard: () => void;
   onOpenAchievements: () => void;
+  onOpenHistory: () => void;
   dict: Dictionary;
 }) {
   return (
@@ -106,6 +110,18 @@ function StatusPanel({
             </span>
           </div>
           <span className="text-sm text-accent-pink">{graveyardCount}</span>
+        </button>
+        <button
+          type="button"
+          onClick={onOpenHistory}
+          className="flex w-full items-center justify-between border-2 border-lcd-light/40 bg-lcd-dim/40 p-3 transition-colors hover:border-accent-cyan"
+        >
+          <div className="flex items-center gap-2">
+            <LineChart className="h-4 w-4 text-accent-cyan" />
+            <span className="text-[9px] uppercase tracking-widest text-lcd-light">
+              {dict.status.history}
+            </span>
+          </div>
         </button>
       </div>
       <div className="mt-auto border-t-2 border-dashed border-lcd-light/30 pt-3">
@@ -149,6 +165,7 @@ export function Game() {
   const [graveyardOpen, setGraveyardOpen] = useState(false);
   const [achievementsOpen, setAchievementsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [evolvedStage, setEvolvedStage] = useState<LifeStage | null>(null);
   const lastStageRef = useRef<LifeStage | null>(null);
 
@@ -410,6 +427,7 @@ export function Game() {
               graveyardCount={graveyard.length}
               onOpenGraveyard={() => setGraveyardOpen(true)}
               onOpenAchievements={() => setAchievementsOpen(true)}
+              onOpenHistory={() => setHistoryOpen(true)}
               dict={dict}
             />
           </aside>
@@ -497,6 +515,12 @@ export function Game() {
         onOpenChange={setHelpOpen}
         onExport={actions.exportSave}
         onImport={actions.importSave}
+      />
+
+      <HistoryDialog
+        open={historyOpen}
+        onOpenChange={setHistoryOpen}
+        pet={pet}
       />
 
       {evolvedStage && <EvolutionFlash stage={evolvedStage} />}

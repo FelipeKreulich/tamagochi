@@ -112,6 +112,9 @@ export interface Dictionary {
     title: string;
     achievements: string;
     graveyard: string;
+    history: string;
+    historySub: string;
+    historyEmpty: string;
     tipTitle: string;
     tip: string;
   };

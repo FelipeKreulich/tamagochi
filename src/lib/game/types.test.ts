@@ -38,6 +38,8 @@ describe("game types", () => {
         medicine: 0,
         clean: 0,
       },
+      statsHistory: [],
+      lastSampleAt: 0,
       bornAt: 0,
       ageMinutes: 0,
       lastTickAt: 0,

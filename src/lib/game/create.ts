@@ -24,6 +24,8 @@ export function createPet(params: {
       health: 100,
     },
     counters: { ...EMPTY_COUNTERS },
+    statsHistory: [],
+    lastSampleAt: now,
     bornAt: now,
     ageMinutes: 0,
     lastTickAt: now,
@@ -42,6 +44,9 @@ export function normalizePet(pet: Pet | null | undefined): Pet | null {
   return {
     ...pet,
     counters: pet.counters ?? { ...EMPTY_COUNTERS },
+    statsHistory: Array.isArray(pet.statsHistory) ? pet.statsHistory : [],
+    lastSampleAt:
+      typeof pet.lastSampleAt === "number" ? pet.lastSampleAt : pet.lastTickAt ?? Date.now(),
     everSick:
       typeof pet.everSick === "boolean" ? pet.everSick : !!pet.isSick,
   };

@@ -44,6 +44,8 @@ export interface Pet {
   mood: Mood;
   stats: Stats;
   counters: Counters;
+  statsHistory: StatSample[];
+  lastSampleAt: number;
   bornAt: number;
   ageMinutes: number;
   lastTickAt: number;
@@ -66,6 +68,15 @@ export const EMPTY_COUNTERS: Counters = {
   medicine: 0,
   clean: 0,
 };
+
+export interface StatSample {
+  t: number;
+  hunger: number;
+  happiness: number;
+  energy: number;
+  hygiene: number;
+  health: number;
+}
 
 export interface Achievement {
   id: string;

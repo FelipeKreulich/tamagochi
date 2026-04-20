@@ -52,3 +52,7 @@ export const AUTO_WAKE_ENERGY_THRESHOLD = 98;
 
 // Tick interval for the in-memory game loop (ms).
 export const TICK_INTERVAL_MS = 3000;
+
+// Stats history — sample roughly every 30s, keep at most 40 samples (~20min).
+export const STATS_SAMPLE_INTERVAL_MS = 30_000;
+export const STATS_HISTORY_MAX = 40;
