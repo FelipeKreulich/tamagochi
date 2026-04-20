@@ -5,7 +5,7 @@ export const STORAGE_VERSION = 1 as const;
 export const STORAGE_KEY = "tamagochi:save";
 
 export interface SaveStateV1 {
-  version: typeof STORAGE_VERSION;
+  version: 1;
   pet: Pet | null;
   graveyard: GraveyardEntry[];
   achievements: Achievement[];
@@ -19,7 +19,7 @@ export interface SaveStateV1 {
 export type SaveState = SaveStateV1;
 
 export const INITIAL_SAVE_STATE: SaveState = {
-  version: STORAGE_VERSION,
+  version: 1,
   pet: null,
   graveyard: [],
   achievements: [],
@@ -29,3 +29,9 @@ export const INITIAL_SAVE_STATE: SaveState = {
   },
   updatedAt: 0,
 };
+
+export function isSaveStateV1(value: unknown): value is SaveStateV1 {
+  if (!value || typeof value !== "object") return false;
+  const v = value as { version?: unknown };
+  return v.version === 1;
+}
