@@ -26,7 +26,7 @@ client-side (sem backend), persistência em `localStorage` com versionamento.
   Anthropic nos commits, PRs ou mensagens de git. Regra global do usuário.
 - Mensagens em pt-BR no estilo Conventional Commits
   (`feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`).
-- Branch padrão: **`master`** (remoto: `git@github.com:FelipeKreulich/tamagochi.git`).
+- Branch padrão: **`master`** (remoto: `git@github.com:FelipeKreulich/tamagotchi.git`).
 - Commitar em etapas lógicas (ex: "feat: pet stats and decay system",
   "feat: feeding action", "feat: minigame").
 
