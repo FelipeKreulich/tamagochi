@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/dialog";
 import { useTamagotchi } from "@/hooks/useTamagotchi";
 import { useIntroMusic } from "@/hooks/useIntroMusic";
+import { useCriticalNotifications } from "@/hooks/useCriticalNotifications";
+import { NotificationToggle } from "./NotificationToggle";
 import type { Species } from "@/lib/game/types";
 import { StartScreen } from "./StartScreen";
 import { TamagotchiCase } from "./TamagotchiCase";
@@ -44,6 +46,7 @@ export function Game() {
   const showIntroMusic = !hydrated || onStartScreen || (pet && !pet.isAlive);
 
   useIntroMusic({ muted: settings.muted, enabled: !!showIntroMusic });
+  useCriticalNotifications({ pet, enabled: settings.notificationsEnabled });
 
   const [menuIndex, setMenuIndex] = useState(0);
   const [miniOpen, setMiniOpen] = useState(false);
@@ -167,11 +170,15 @@ export function Game() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-4">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         <MuteToggle
           muted={settings.muted}
           onToggle={() => actions.setMuted(!settings.muted)}
           label={settings.muted ? "MUTE" : "SOM"}
+        />
+        <NotificationToggle
+          enabled={settings.notificationsEnabled}
+          onChange={actions.setNotificationsEnabled}
         />
         {graveyard.length > 0 && (
           <button
