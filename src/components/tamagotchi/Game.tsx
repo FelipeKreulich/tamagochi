@@ -46,6 +46,7 @@ import { AchievementsDialog } from "./AchievementsDialog";
 import { ParticleBurst, type ParticleKind } from "./Particles";
 import { RenameDialog } from "./RenameDialog";
 import { WeatherLayer } from "./WeatherLayer";
+import { SceneryLayer } from "./SceneryLayer";
 import { useWeather } from "@/hooks/useWeather";
 import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
@@ -522,6 +523,7 @@ export function Game() {
         <section className="order-1 flex flex-col items-center justify-center gap-6 lg:order-2 lg:col-start-2">
           <LcdScreen className="max-w-2xl">
             <div className="relative flex min-h-[260px] flex-col items-center justify-center gap-5 sm:min-h-[320px]">
+              <SceneryLayer timeOfDay={timeOfDay} />
               <WeatherLayer weather={weather} />
               <ParticleBurst trigger={particle.key} kind={particle.kind} />
               {onStartScreen ? (
