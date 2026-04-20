@@ -88,7 +88,7 @@ export const ACCESSORIES: Accessory[] = [
     price: 60,
     frame: crownFrame,
     palette: { 0: "transparent", 1: "#ffe14d" },
-    offset: { top: "-38%", left: "50%" },
+    offset: { top: "-18%", left: "50%" },
     scale: 0.85,
   },
   {
@@ -98,7 +98,7 @@ export const ACCESSORIES: Accessory[] = [
     price: 40,
     frame: wizardFrame,
     palette: { 0: "transparent", 1: "#6d3cff", 2: "#ffe14d" },
-    offset: { top: "-48%", left: "50%" },
+    offset: { top: "-28%", left: "50%" },
     scale: 0.85,
   },
   {
@@ -108,7 +108,7 @@ export const ACCESSORIES: Accessory[] = [
     price: 20,
     frame: capFrame,
     palette: { 0: "transparent", 1: "#ff4d6d" },
-    offset: { top: "-28%", left: "50%" },
+    offset: { top: "-13%", left: "50%" },
     scale: 0.85,
   },
   {
