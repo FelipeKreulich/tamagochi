@@ -97,6 +97,44 @@ export interface Dictionary {
     lostWas: string;
     continue: string;
   };
+  minigameHub: {
+    title: string;
+    subtitle: string;
+    coins: string;
+    guessName: string;
+    guessDesc: string;
+    simonName: string;
+    simonDesc: string;
+    reflexName: string;
+    reflexDesc: string;
+    reward: string;
+  };
+  simon: {
+    title: string;
+    subtitle: string;
+    watch: string;
+    yourTurn: string;
+    round: string;
+    gameOver: string;
+    victory: string;
+    earned: string;
+    start: string;
+    exit: string;
+  };
+  reflex: {
+    title: string;
+    subtitle: string;
+    wait: string;
+    now: string;
+    tooEarly: string;
+    hit: string;
+    miss: string;
+    round: string;
+    finished: string;
+    earned: string;
+    start: string;
+    exit: string;
+  };
   reset: {
     title: string;
     subtitle: string;

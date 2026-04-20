@@ -46,6 +46,7 @@ export function migrate(raw: unknown): SaveState {
     return {
       ...INITIAL_SAVE_STATE,
       ...raw,
+      coins: typeof raw.coins === "number" ? raw.coins : 0,
       pet: normalizePet(raw.pet),
       settings: { ...INITIAL_SAVE_STATE.settings, ...raw.settings },
     };

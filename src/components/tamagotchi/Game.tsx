@@ -33,7 +33,7 @@ import { HUD } from "./HUD";
 import { ActionMenu, type ActionItem } from "./ActionMenu";
 import { DeathScreen } from "./DeathScreen";
 import { MuteToggle } from "./MuteToggle";
-import { MiniGame } from "./MiniGame";
+import { MinigameHub } from "./MinigameHub";
 import { Sprite } from "./Sprite";
 import { eggFrames } from "./sprites/egg";
 import { SPECIES_META } from "./sprites";
@@ -46,7 +46,7 @@ import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
 import { HistoryDialog } from "./HistoryDialog";
 import { EvolutionFlash } from "./EvolutionFlash";
-import { LineChart } from "lucide-react";
+import { LineChart, Coins } from "lucide-react";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
 import { hasEvolved } from "@/lib/game/lifecycle";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
@@ -65,6 +65,7 @@ function StatusPanel({
   achievementCount,
   totalAchievements,
   graveyardCount,
+  coins,
   onOpenGraveyard,
   onOpenAchievements,
   onOpenHistory,
@@ -73,6 +74,7 @@ function StatusPanel({
   achievementCount: number;
   totalAchievements: number;
   graveyardCount: number;
+  coins: number;
   onOpenGraveyard: () => void;
   onOpenAchievements: () => void;
   onOpenHistory: () => void;
@@ -84,6 +86,17 @@ function StatusPanel({
         {dict.status.title}
       </p>
       <div className="space-y-3">
+        <div className="flex items-center justify-between border-2 border-accent-pink/50 bg-accent-pink/10 p-3">
+          <div className="flex items-center gap-2">
+            <Coins className="h-4 w-4 text-accent-pink" />
+            <span className="text-[9px] uppercase tracking-widest text-lcd-light">
+              {dict.minigameHub.coins}
+            </span>
+          </div>
+          <span className="text-sm uppercase tracking-widest text-accent-pink">
+            {coins}
+          </span>
+        </div>
         <button
           type="button"
           onClick={onOpenAchievements}
@@ -133,7 +146,8 @@ const TOTAL_ACHIEVEMENTS = ACHIEVEMENTS.length;
 
 export function Game() {
   const tama = useTamagotchi();
-  const { pet, hydrated, settings, actions, achievements, graveyard } = tama;
+  const { pet, hydrated, settings, actions, achievements, graveyard, coins } =
+    tama;
   const dict = useT();
   const { locale, setLocale } = useLocale();
   const timeOfDay = useTimeOfDay();
@@ -453,6 +467,7 @@ export function Game() {
               achievementCount={achievements.length}
               totalAchievements={TOTAL_ACHIEVEMENTS}
               graveyardCount={graveyard.length}
+              coins={coins}
               onOpenGraveyard={() => setGraveyardOpen(true)}
               onOpenAchievements={() => setAchievementsOpen(true)}
               onOpenHistory={() => setHistoryOpen(true)}
@@ -477,28 +492,27 @@ export function Game() {
         </footer>
       )}
 
-      <Dialog open={miniOpen} onOpenChange={setMiniOpen}>
-        <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-[11px] uppercase tracking-widest text-accent-pink">
-              {dict.minigame.title}
-            </DialogTitle>
-            <DialogDescription className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-              {tpl(dict.minigame.subtitle, { name: pet?.name ?? "" })}
-            </DialogDescription>
-          </DialogHeader>
-          {pet && (
-            <MiniGame
-              pet={pet}
-              onFinish={(won) => {
-                actions.playMinigame(won);
-                toast(won ? dict.toasts.minigameWon : dict.toasts.minigameLost);
-                setMiniOpen(false);
-              }}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      {pet && (
+        <MinigameHub
+          open={miniOpen}
+          onOpenChange={setMiniOpen}
+          pet={pet}
+          muted={settings.muted}
+          coins={coins}
+          onFinishGuess={(won) => {
+            actions.playMinigame(won);
+            if (won) actions.addCoins(5);
+            toast(won ? dict.toasts.minigameWon : dict.toasts.minigameLost);
+          }}
+          onFinishGeneric={(result) => {
+            if (result.happiness > 0) actions.awardHappiness(result.happiness);
+            if (result.coins > 0) actions.addCoins(result.coins);
+            toast(
+              result.won ? dict.toasts.minigameWon : dict.toasts.minigameLost
+            );
+          }}
+        />
+      )}
 
       <Dialog open={resetOpen} onOpenChange={setResetOpen}>
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-sm">

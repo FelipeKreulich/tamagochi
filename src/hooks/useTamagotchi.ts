@@ -53,6 +53,7 @@ export interface TamagotchiApi {
   graveyard: GraveyardEntry[];
   achievements: Achievement[];
   settings: SaveState["settings"];
+  coins: number;
   isAlive: boolean;
   actions: {
     start: (name: string, species: Species) => void;
@@ -64,6 +65,8 @@ export interface TamagotchiApi {
     sleep: () => void;
     wake: () => void;
     playMinigame: (won: boolean) => void;
+    awardHappiness: (delta: number) => void;
+    addCoins: (n: number) => void;
     pat: () => void;
     reset: () => void;
     setMuted: (muted: boolean) => void;
@@ -230,6 +233,26 @@ export function useTamagotchi(): TamagotchiApi {
         ),
       pat: () =>
         applyToPet(patAction, (muted) => chirpHappy({ muted })),
+      awardHappiness: (delta) =>
+        applyToPet((p) =>
+          p.isAlive && !p.isSleeping
+            ? {
+                ...p,
+                stats: { ...p.stats, happiness: Math.max(0, Math.min(100, p.stats.happiness + delta)) },
+              }
+            : p
+        ),
+      addCoins: (n) => {
+        if (n === 0) return;
+        setState((prev) => {
+          const next: SaveState = {
+            ...prev,
+            coins: Math.max(0, prev.coins + n),
+          };
+          persist(next);
+          return next;
+        });
+      },
       reset: () => {
         setState((prev) => {
           const next: SaveState = { ...prev, pet: null };
@@ -291,6 +314,7 @@ export function useTamagotchi(): TamagotchiApi {
     graveyard: state.graveyard,
     achievements: state.achievements,
     settings: state.settings,
+    coins: state.coins,
     isAlive: !!state.pet?.isAlive,
     actions,
   };
