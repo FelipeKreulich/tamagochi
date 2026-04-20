@@ -9,7 +9,7 @@ describe("lifecycle", () => {
     expect(stageFromAge(6 * 60)).toBe("child");
     expect(stageFromAge(20 * 60)).toBe("teen");
     expect(stageFromAge(45 * 60)).toBe("adult");
-    expect(stageFromAge(200 * 60)).toBe("elder");
+    expect(stageFromAge(5 * 60 * 60)).toBe("elder");
   });
 
   it("ageSeconds computes from bornAt", () => {

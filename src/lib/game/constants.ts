@@ -34,11 +34,12 @@ export const STAGE_THRESHOLDS_SECONDS: Record<LifeStage, number> = {
   child: 5 * 60,
   teen: 15 * 60,
   adult: 40 * 60,
-  elder: 120 * 60,
+  elder: 4 * 60 * 60,
 };
 
 // Old-age death: pet can die naturally after this age in seconds, even healthy.
-export const MAX_NATURAL_AGE_SECONDS = 180 * 60;
+// ~24h. Allows overnight play without losing a well-cared-for pet.
+export const MAX_NATURAL_AGE_SECONDS = 24 * 60 * 60;
 
 // How often a poop can appear (seconds).
 export const POOP_INTERVAL_SECONDS = 90;
