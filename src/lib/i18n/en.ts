@@ -153,6 +153,26 @@ const dict: Dictionary = {
     history: "HISTORY",
     historySub: "Latest stat samples.",
     historyEmpty: "Not enough data yet.",
+    daycare: "DAYCARE",
+    daycareOn: "ON",
+    daycareOff: "OFF",
+  },
+  daycare: {
+    title: "DAYCARE MODE",
+    subtitle: "Automatic rules that care for your pet while you're away.",
+    enable: "ENABLE DAYCARE",
+    enableDesc:
+      "When enabled, the rules below run on each tick and care for your pet.",
+    rulesTitle: "RULES",
+    feedLabel: "Feed when hunger <",
+    bathLabel: "Bathe when hygiene <",
+    cleanLabel: "Clean mess starting at",
+    autoMedicine: "Give medicine when sick",
+    sleepLabel: "Sleep when energy <",
+    wakeLabel: "Wake when energy >=",
+    thresholdSuffix: "/100",
+    close: "CLOSE",
+    reset: "DEFAULTS",
   },
   hud: {
     pet: "PET",
@@ -287,6 +307,13 @@ const dict: Dictionary = {
     exportDesc: "Download a backup of your pet as JSON.",
     import: "IMPORT SAVE",
     importDesc: "Load a backup or a save from another browser.",
+    daycareTitle: "DAYCARE MODE",
+    daycareIntro:
+      "Daycare is a mode that takes care of your pet on its own. Once enabled via the DAYCARE button (Status panel), the game applies automatic rules each tick: feed, bathe, give medicine, clean mess, sleep and wake.",
+    daycareHowItWorks:
+      "Each rule only acts when the stat crosses the threshold you configure. E.g. 'hunger < 30' feeds whenever hunger drops below 30. Great for leaving the game running overnight or during a long break.",
+    daycareLimits:
+      "Daycare runs while the game tab is open. With it enabled and a 24h max lifespan, your pet can safely survive a full night of sleep.",
   },
 };
 

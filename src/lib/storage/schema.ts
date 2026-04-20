@@ -4,6 +4,15 @@ export const STORAGE_VERSION = 1 as const;
 
 export const STORAGE_KEY = "tamagochi:save";
 
+export interface DaycareRules {
+  feedThreshold: number;
+  bathThreshold: number;
+  cleanPoopThreshold: number;
+  autoMedicine: boolean;
+  autoSleepThreshold: number;
+  autoWakeThreshold: number;
+}
+
 export interface SaveStateV1 {
   version: 1;
   pet: Pet | null;
@@ -13,9 +22,20 @@ export interface SaveStateV1 {
   settings: {
     muted: boolean;
     notificationsEnabled: boolean;
+    daycareEnabled: boolean;
+    daycareRules: DaycareRules;
   };
   updatedAt: number;
 }
+
+export const DEFAULT_DAYCARE_RULES: DaycareRules = {
+  feedThreshold: 30,
+  bathThreshold: 25,
+  cleanPoopThreshold: 1,
+  autoMedicine: true,
+  autoSleepThreshold: 25,
+  autoWakeThreshold: 95,
+};
 
 export type SaveState = SaveStateV1;
 
@@ -28,6 +48,8 @@ export const INITIAL_SAVE_STATE: SaveState = {
   settings: {
     muted: false,
     notificationsEnabled: false,
+    daycareEnabled: false,
+    daycareRules: { ...DEFAULT_DAYCARE_RULES },
   },
   updatedAt: 0,
 };

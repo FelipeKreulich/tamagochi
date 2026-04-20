@@ -153,6 +153,26 @@ const dict: Dictionary = {
     history: "HISTORICO",
     historySub: "Ultimas amostras dos stats.",
     historyEmpty: "Ainda nao ha dados suficientes.",
+    daycare: "CRECHE",
+    daycareOn: "LIGADA",
+    daycareOff: "DESLIGADA",
+  },
+  daycare: {
+    title: "MODO CRECHE",
+    subtitle: "Regras automáticas para cuidar do bichinho sozinho.",
+    enable: "ATIVAR CRECHE",
+    enableDesc:
+      "Quando ligado, as regras abaixo rodam a cada tick e cuidam do bichinho.",
+    rulesTitle: "REGRAS",
+    feedLabel: "Alimentar quando fome <",
+    bathLabel: "Dar banho quando higiene <",
+    cleanLabel: "Limpar bagunça a partir de",
+    autoMedicine: "Dar remédio quando doente",
+    sleepLabel: "Dormir quando energia <",
+    wakeLabel: "Acordar quando energia >=",
+    thresholdSuffix: "/100",
+    close: "FECHAR",
+    reset: "PADRAO",
   },
   hud: {
     pet: "BICHINHO",
@@ -287,6 +307,13 @@ const dict: Dictionary = {
     exportDesc: "Baixe um backup do seu bichinho em JSON.",
     import: "IMPORTAR SAVE",
     importDesc: "Carregue um backup ou save de outro navegador.",
+    daycareTitle: "MODO CRECHE",
+    daycareIntro:
+      "A creche (daycare) é um modo que cuida do bichinho sozinho. Ativando no botão CRECHE (painel Status), o jogo aplica regras automáticas a cada tick: alimentar, dar banho, dar remédio, limpar bagunça, dormir e acordar.",
+    daycareHowItWorks:
+      "Cada regra só age quando o stat cruza o limite que você configurar. Ex: com 'fome < 30', o bichinho é alimentado sempre que a fome cair abaixo de 30. Assim você pode deixar rodando durante a noite ou uma pausa longa.",
+    daycareLimits:
+      "A creche roda enquanto a aba do jogo estiver aberta. Com ela ativa e vida útil de até 24h, seu bichinho sobrevive tranquilo uma noite de sono.",
   },
 };
 

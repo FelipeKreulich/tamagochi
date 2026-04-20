@@ -48,7 +48,14 @@ export function migrate(raw: unknown): SaveState {
       ...raw,
       coins: typeof raw.coins === "number" ? raw.coins : 0,
       pet: normalizePet(raw.pet),
-      settings: { ...INITIAL_SAVE_STATE.settings, ...raw.settings },
+      settings: {
+        ...INITIAL_SAVE_STATE.settings,
+        ...raw.settings,
+        daycareRules: {
+          ...INITIAL_SAVE_STATE.settings.daycareRules,
+          ...(raw.settings?.daycareRules ?? {}),
+        },
+      },
     };
   }
   return INITIAL_SAVE_STATE;

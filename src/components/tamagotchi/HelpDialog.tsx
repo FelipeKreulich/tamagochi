@@ -159,6 +159,21 @@ export function HelpDialog({
             </ul>
           </section>
 
+          <section className="space-y-2 border-t-2 border-dashed border-lcd-light/30 pt-4">
+            <h3 className="text-[10px] uppercase tracking-widest text-accent-cyan">
+              {dict.help.daycareTitle}
+            </h3>
+            <p className="text-[9px] leading-relaxed text-lcd-light/90">
+              {dict.help.daycareIntro}
+            </p>
+            <p className="text-[9px] leading-relaxed text-lcd-light/90">
+              {dict.help.daycareHowItWorks}
+            </p>
+            <p className="text-[9px] leading-relaxed text-lcd-light/90">
+              {dict.help.daycareLimits}
+            </p>
+          </section>
+
           <section className="space-y-3 border-t-2 border-dashed border-lcd-light/30 pt-4">
             <h3 className="text-[10px] uppercase tracking-widest text-accent-cyan">
               {dict.help.dataTitle}

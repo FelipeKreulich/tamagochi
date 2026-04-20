@@ -46,9 +46,11 @@ import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
 import { HistoryDialog } from "./HistoryDialog";
 import { EvolutionFlash } from "./EvolutionFlash";
-import { LineChart, Coins } from "lucide-react";
+import { DaycareDialog } from "./DaycareDialog";
+import { LineChart, Coins, HeartPulse } from "lucide-react";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
 import { hasEvolved } from "@/lib/game/lifecycle";
+import { cn } from "@/lib/utils";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
 import { useTimeOfDay } from "@/hooks/useTimeOfDay";
 import {
@@ -66,18 +68,22 @@ function StatusPanel({
   totalAchievements,
   graveyardCount,
   coins,
+  daycareEnabled,
   onOpenGraveyard,
   onOpenAchievements,
   onOpenHistory,
+  onOpenDaycare,
   dict,
 }: {
   achievementCount: number;
   totalAchievements: number;
   graveyardCount: number;
   coins: number;
+  daycareEnabled: boolean;
   onOpenGraveyard: () => void;
   onOpenAchievements: () => void;
   onOpenHistory: () => void;
+  onOpenDaycare: () => void;
   dict: Dictionary;
 }) {
   return (
@@ -137,6 +143,36 @@ function StatusPanel({
             </span>
           </div>
         </button>
+        <button
+          type="button"
+          onClick={onOpenDaycare}
+          className={cn(
+            "flex w-full items-center justify-between border-2 p-3 transition-colors",
+            daycareEnabled
+              ? "border-accent-cyan bg-accent-cyan/15 hover:border-accent-pink"
+              : "border-lcd-light/40 bg-lcd-dim/40 hover:border-accent-cyan"
+          )}
+        >
+          <div className="flex items-center gap-2">
+            <HeartPulse
+              className={cn(
+                "h-4 w-4",
+                daycareEnabled ? "text-accent-cyan" : "text-lcd-light"
+              )}
+            />
+            <span className="text-[9px] uppercase tracking-widest text-lcd-light">
+              {dict.status.daycare}
+            </span>
+          </div>
+          <span
+            className={cn(
+              "text-[9px] uppercase tracking-widest",
+              daycareEnabled ? "text-accent-cyan" : "text-lcd-light/60"
+            )}
+          >
+            {daycareEnabled ? dict.status.daycareOn : dict.status.daycareOff}
+          </span>
+        </button>
       </div>
     </div>
   );
@@ -174,6 +210,7 @@ export function Game() {
   const [achievementsOpen, setAchievementsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [daycareOpen, setDaycareOpen] = useState(false);
   const [patBouncing, setPatBouncing] = useState(false);
   const lastPatAtRef = useRef(0);
 
@@ -468,9 +505,11 @@ export function Game() {
               totalAchievements={TOTAL_ACHIEVEMENTS}
               graveyardCount={graveyard.length}
               coins={coins}
+              daycareEnabled={settings.daycareEnabled}
               onOpenGraveyard={() => setGraveyardOpen(true)}
               onOpenAchievements={() => setAchievementsOpen(true)}
               onOpenHistory={() => setHistoryOpen(true)}
+              onOpenDaycare={() => setDaycareOpen(true)}
               dict={dict}
             />
           </aside>
@@ -564,6 +603,15 @@ export function Game() {
         open={historyOpen}
         onOpenChange={setHistoryOpen}
         pet={pet}
+      />
+
+      <DaycareDialog
+        open={daycareOpen}
+        onOpenChange={setDaycareOpen}
+        enabled={settings.daycareEnabled}
+        rules={settings.daycareRules}
+        onToggle={actions.setDaycareEnabled}
+        onChangeRules={actions.setDaycareRules}
       />
 
       {evolvedStage && <EvolutionFlash stage={evolvedStage} />}

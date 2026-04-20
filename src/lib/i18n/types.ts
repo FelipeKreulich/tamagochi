@@ -153,6 +153,25 @@ export interface Dictionary {
     history: string;
     historySub: string;
     historyEmpty: string;
+    daycare: string;
+    daycareOn: string;
+    daycareOff: string;
+  };
+  daycare: {
+    title: string;
+    subtitle: string;
+    enable: string;
+    enableDesc: string;
+    rulesTitle: string;
+    feedLabel: string;
+    bathLabel: string;
+    cleanLabel: string;
+    autoMedicine: string;
+    sleepLabel: string;
+    wakeLabel: string;
+    thresholdSuffix: string;
+    close: string;
+    reset: string;
   };
   hud: {
     pet: string;
@@ -230,5 +249,9 @@ export interface Dictionary {
     exportDesc: string;
     import: string;
     importDesc: string;
+    daycareTitle: string;
+    daycareIntro: string;
+    daycareHowItWorks: string;
+    daycareLimits: string;
   };
 }

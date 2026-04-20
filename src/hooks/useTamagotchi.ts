@@ -46,6 +46,8 @@ import {
   type SaveState,
 } from "@/lib/storage";
 import { ACHIEVEMENTS, checkAchievements } from "@/lib/game/achievements";
+import { runDaycare } from "@/lib/game/daycare";
+import type { DaycareRules } from "@/lib/storage/schema";
 
 export interface TamagotchiApi {
   hydrated: boolean;
@@ -71,6 +73,8 @@ export interface TamagotchiApi {
     reset: () => void;
     setMuted: (muted: boolean) => void;
     setNotificationsEnabled: (enabled: boolean) => void;
+    setDaycareEnabled: (enabled: boolean) => void;
+    setDaycareRules: (rules: DaycareRules) => void;
     exportSave: () => string;
     importSave: (raw: string) => { success: boolean; error?: string };
   };
@@ -139,7 +143,17 @@ export function useTamagotchi(): TamagotchiApi {
           if (Math.random() < 0.12) beepAlert({ muted });
         }
 
-        let next: SaveState = { ...prev, pet };
+        let runnablePet = pet;
+        if (
+          prev.settings.daycareEnabled &&
+          runnablePet.isAlive &&
+          !events.died
+        ) {
+          const result = runDaycare(runnablePet, prev.settings.daycareRules);
+          runnablePet = result.pet;
+        }
+
+        let next: SaveState = { ...prev, pet: runnablePet };
 
         // Graveyard entry on death
         if (events.died && pet.diedAt) {
@@ -275,6 +289,26 @@ export function useTamagotchi(): TamagotchiApi {
           const next: SaveState = {
             ...prev,
             settings: { ...prev.settings, notificationsEnabled: enabled },
+          };
+          persist(next);
+          return next;
+        });
+      },
+      setDaycareEnabled: (enabled) => {
+        setState((prev) => {
+          const next: SaveState = {
+            ...prev,
+            settings: { ...prev.settings, daycareEnabled: enabled },
+          };
+          persist(next);
+          return next;
+        });
+      },
+      setDaycareRules: (rules) => {
+        setState((prev) => {
+          const next: SaveState = {
+            ...prev,
+            settings: { ...prev.settings, daycareRules: rules },
           };
           persist(next);
           return next;
