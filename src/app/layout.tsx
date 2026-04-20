@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   title: "Tamagochi — Retro Pet",
   description:
     "Jogo estilo Tamagotchi com estética retrô dos anos 90. Cuide do seu bichinho virtual!",
+  icons: {
+    icon: [{ url: "/tamagochi.ico", type: "image/x-icon" }],
+    shortcut: "/tamagochi.ico",
+    apple: "/tamagochi.ico",
+  },
 };
 
 export default function RootLayout({
