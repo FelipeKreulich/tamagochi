@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Pet } from "@/lib/game/types";
 import {
+  chirpCry,
   chirpDirty,
   chirpHappy,
   chirpHungry,
@@ -11,8 +12,11 @@ import {
   chirpSleep,
 } from "@/lib/audio";
 
-const BASE_INTERVAL_MS = 9000;
-const JITTER_MS = 6000;
+const AMBIENT_BASE_MS = 9000;
+const AMBIENT_JITTER_MS = 6000;
+
+const CRY_BASE_MS = 3200;
+const CRY_JITTER_MS = 2400;
 
 function pickChirp(pet: Pet): ((opts: { muted: boolean }) => void) | null {
   if (!pet.isAlive) return null;
@@ -34,6 +38,17 @@ function pickChirp(pet: Pet): ((opts: { muted: boolean }) => void) | null {
   }
 }
 
+function needsCrying(pet: Pet): boolean {
+  if (!pet.isAlive || pet.isSleeping) return false;
+  return (
+    pet.stats.hunger <= 20 ||
+    pet.stats.hygiene <= 20 ||
+    pet.stats.happiness <= 20 ||
+    pet.stats.health <= 30 ||
+    pet.isSick
+  );
+}
+
 export function usePetAmbience(options: {
   pet: Pet | null;
   muted: boolean;
@@ -41,19 +56,28 @@ export function usePetAmbience(options: {
 }) {
   const { pet, muted, enabled } = options;
 
+  // Keep the latest pet in a ref so the long-lived timers read fresh state
+  // without having to restart every 3s tick.
+  const petRef = useRef<Pet | null>(pet);
+  useEffect(() => {
+    petRef.current = pet;
+  });
+
+  // Ambient chirps — periodic mood-based sound, independent of severity.
   useEffect(() => {
     if (!enabled || muted) return;
-    if (!pet || !pet.isAlive) return;
-
     let timeoutId: number | undefined;
     let cancelled = false;
 
     const schedule = () => {
-      const delay = BASE_INTERVAL_MS + Math.random() * JITTER_MS;
+      const delay = AMBIENT_BASE_MS + Math.random() * AMBIENT_JITTER_MS;
       timeoutId = window.setTimeout(() => {
         if (cancelled) return;
-        const chirp = pickChirp(pet);
-        chirp?.({ muted });
+        const p = petRef.current;
+        if (p && p.isAlive) {
+          const chirp = pickChirp(p);
+          chirp?.({ muted });
+        }
         schedule();
       }, delay);
     };
@@ -63,5 +87,30 @@ export function usePetAmbience(options: {
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [pet, muted, enabled]);
+  }, [muted, enabled]);
+
+  // Crying loop — faster cadence, only plays when the pet actually needs help.
+  useEffect(() => {
+    if (!enabled || muted) return;
+    let timeoutId: number | undefined;
+    let cancelled = false;
+
+    const schedule = () => {
+      const delay = CRY_BASE_MS + Math.random() * CRY_JITTER_MS;
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) return;
+        const p = petRef.current;
+        if (p && needsCrying(p)) {
+          chirpCry({ muted });
+        }
+        schedule();
+      }, delay);
+    };
+    schedule();
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [muted, enabled]);
 }

@@ -228,3 +228,17 @@ export function chirpDirty(opts: PlayOptions = {}): void {
   note(ctx, t, 220, 0.08, 0.07, "sawtooth");
   note(ctx, t + 0.09, 180, 0.12, 0.07, "sawtooth");
 }
+
+/**
+ * Subtle "crying" whimper — short sine sweep, lower volume than chirps so it
+ * can loop without becoming annoying.
+ */
+export function chirpCry(opts: PlayOptions = {}): void {
+  if (opts.muted) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  note(ctx, t, 440, 0.14, 0.045, "sine");
+  note(ctx, t + 0.12, 360, 0.18, 0.045, "sine");
+  note(ctx, t + 0.32, 300, 0.2, 0.04, "sine");
+}
