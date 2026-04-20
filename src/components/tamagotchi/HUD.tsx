@@ -3,16 +3,8 @@
 import { useEffect, useState } from "react";
 import type { Pet } from "@/lib/game/types";
 import { StatBar } from "./StatBar";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-
-const STAGE_LABEL: Record<Pet["stage"], string> = {
-  egg: "OVO",
-  baby: "BEBE",
-  child: "CRIANCA",
-  teen: "ADOLES.",
-  adult: "ADULTO",
-  elder: "ANCIAO",
-};
 
 function formatAge(seconds: number): string {
   if (seconds < 60) return `${seconds}s`;
@@ -29,6 +21,7 @@ interface HUDProps {
 }
 
 export function HUD({ pet, className }: HUDProps) {
+  const dict = useT();
   const [now, setNow] = useState<number>(() => pet.lastTickAt);
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);
@@ -45,40 +38,40 @@ export function HUD({ pet, className }: HUDProps) {
     >
       <div className="space-y-1 border-b-2 border-dashed border-lcd-light/30 pb-3">
         <p className="text-[8px] uppercase tracking-[0.3em] text-lcd-light/60">
-          BICHINHO
+          {dict.hud.pet}
         </p>
         <p className="truncate text-sm uppercase tracking-widest text-accent-pink">
           {pet.name}
         </p>
         <div className="flex items-center justify-between text-[9px] uppercase tracking-widest">
-          <span className="text-accent-cyan">{STAGE_LABEL[pet.stage]}</span>
+          <span className="text-accent-cyan">{dict.stages[pet.stage]}</span>
           <span className="text-lcd-light">{formatAge(ageSec)}</span>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col justify-center gap-2">
-        <StatBar label="FOME" value={pet.stats.hunger} accent="green" />
-        <StatBar label="FELI" value={pet.stats.happiness} accent="pink" />
-        <StatBar label="ENER" value={pet.stats.energy} accent="cyan" />
-        <StatBar label="HIGI" value={pet.stats.hygiene} accent="green" />
-        <StatBar label="SAUD" value={pet.stats.health} accent="pink" />
+        <StatBar label={dict.stats.hunger} value={pet.stats.hunger} accent="green" />
+        <StatBar label={dict.stats.happiness} value={pet.stats.happiness} accent="pink" />
+        <StatBar label={dict.stats.energy} value={pet.stats.energy} accent="cyan" />
+        <StatBar label={dict.stats.hygiene} value={pet.stats.hygiene} accent="green" />
+        <StatBar label={dict.stats.health} value={pet.stats.health} accent="pink" />
       </div>
 
       {(pet.isSleeping || pet.isSick || pet.poopCount > 0) && (
         <div className="flex flex-wrap gap-2 border-t-2 border-dashed border-lcd-light/30 pt-3 text-[8px] uppercase tracking-widest">
           {pet.isSleeping && (
             <span className="border-2 border-accent-cyan px-2 py-1 text-accent-cyan">
-              Zzz DORMINDO
+              {dict.flags.sleeping}
             </span>
           )}
           {pet.isSick && (
             <span className="border-2 border-accent-pink px-2 py-1 text-accent-pink animate-[pixelshake_0.8s_steps(2)_infinite]">
-              * DOENTE
+              {dict.flags.sick}
             </span>
           )}
           {pet.poopCount > 0 && (
             <span className="border-2 border-accent-pink px-2 py-1 text-accent-pink">
-              x{pet.poopCount} SUJO
+              x{pet.poopCount} {dict.flags.dirty}
             </span>
           )}
         </div>

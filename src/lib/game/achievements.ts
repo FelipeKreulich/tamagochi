@@ -1,70 +1,76 @@
 import type { SaveState } from "@/lib/storage";
 import type { Achievement } from "./types";
+import type { Dictionary } from "@/lib/i18n";
+
+export type AchievementKey =
+  | "firstHatch"
+  | "teenReached"
+  | "adultReached"
+  | "elderReached"
+  | "firstWeek"
+  | "neverSick"
+  | "fullLife"
+  | "petCollector";
 
 export interface AchievementDef {
+  key: AchievementKey;
   id: string;
-  title: string;
-  description: string;
   check: (state: SaveState) => boolean;
 }
 
 export const ACHIEVEMENTS: AchievementDef[] = [
   {
+    key: "firstHatch",
     id: "first-hatch",
-    title: "PRIMEIRO CHOCAR",
-    description: "Seu primeiro bichinho nasceu!",
     check: (s) => !!s.pet && s.pet.stage !== "egg",
   },
   {
+    key: "teenReached",
     id: "teen-reached",
-    title: "ADOLESCÊNCIA",
-    description: "Seu bichinho virou adolescente.",
     check: (s) =>
-      !!s.pet &&
-      ["teen", "adult", "elder"].includes(s.pet.stage),
+      !!s.pet && ["teen", "adult", "elder"].includes(s.pet.stage),
   },
   {
+    key: "adultReached",
     id: "adult-reached",
-    title: "VIDA ADULTA",
-    description: "Seu bichinho chegou à fase adulta.",
-    check: (s) =>
-      !!s.pet && ["adult", "elder"].includes(s.pet.stage),
+    check: (s) => !!s.pet && ["adult", "elder"].includes(s.pet.stage),
   },
   {
+    key: "elderReached",
     id: "elder-reached",
-    title: "ANCIÃO SÁBIO",
-    description: "Seu bichinho atingiu a anciania.",
     check: (s) => !!s.pet && s.pet.stage === "elder",
   },
   {
+    key: "firstWeek",
     id: "first-week",
-    title: "PRIMEIRA SEMANA",
-    description: "Um bichinho viveu por uma sessão longa.",
     check: (s) => !!s.pet && s.pet.ageMinutes >= 60,
   },
   {
+    key: "neverSick",
     id: "never-sick",
-    title: "SAÚDE DE FERRO",
-    description: "Bichinho nunca adoeceu até a fase adulta.",
     check: (s) =>
       !!s.pet &&
       !s.pet.isSick &&
       ["adult", "elder"].includes(s.pet.stage),
   },
   {
+    key: "fullLife",
     id: "full-life",
-    title: "VIDA PLENA",
-    description: "Seu bichinho morreu de velhice.",
-    check: (s) =>
-      s.graveyard.some((g) => g.causeOfDeath === "Velhice"),
+    check: (s) => s.graveyard.some((g) => g.causeOfDeath === "oldAge"),
   },
   {
+    key: "petCollector",
     id: "pet-collector",
-    title: "COLECIONADOR",
-    description: "Tenha 3 bichinhos no cemitério.",
     check: (s) => s.graveyard.length >= 3,
   },
 ];
+
+export function getAchievementText(
+  def: AchievementDef,
+  dict: Dictionary
+): { title: string; description: string } {
+  return dict.achievements[def.key];
+}
 
 export function checkAchievements(
   state: SaveState,
@@ -77,8 +83,8 @@ export function checkAchievements(
     if (def.check(state)) {
       unlocked.push({
         id: def.id,
-        title: def.title,
-        description: def.description,
+        title: def.key,
+        description: def.key,
         unlockedAt: Date.now(),
       });
     }

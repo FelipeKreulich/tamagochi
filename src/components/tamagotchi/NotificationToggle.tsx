@@ -2,6 +2,7 @@
 
 import { Bell, BellOff } from "lucide-react";
 import { requestNotificationPermission } from "@/hooks/useCriticalNotifications";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -16,6 +17,7 @@ export function NotificationToggle({
   onChange,
   className,
 }: NotificationToggleProps) {
+  const dict = useT();
   const Icon = enabled ? Bell : BellOff;
 
   return (
@@ -29,13 +31,13 @@ export function NotificationToggle({
         const ok = await requestNotificationPermission();
         if (ok) {
           onChange(true);
-          toast("🔔 Notificações ativadas");
+          toast(dict.toasts.notifEnabled);
         } else {
-          toast.error("Permissão negada pelo navegador");
+          toast.error(dict.toasts.notifDenied);
         }
       }}
       aria-pressed={enabled}
-      aria-label={enabled ? "Desativar notificações" : "Ativar notificações"}
+      aria-label={enabled ? dict.header.notifAriaOn : dict.header.notifAriaOff}
       className={cn(
         "inline-flex items-center gap-2 border-2 border-lcd-light bg-lcd-dark px-3 py-2 text-[10px] uppercase tracking-widest text-lcd-light shadow-[4px_4px_0_0] shadow-lcd-light/30 transition-[transform,box-shadow] duration-75 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0]",
         enabled && "border-accent-cyan text-accent-cyan shadow-accent-cyan/30",
@@ -43,7 +45,7 @@ export function NotificationToggle({
       )}
     >
       <Icon className="h-3 w-3" />
-      <span>{enabled ? "NOTIF" : "NOTIF OFF"}</span>
+      <span>{enabled ? dict.header.notifOn : dict.header.notifOff}</span>
     </button>
   );
 }

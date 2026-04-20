@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Pet } from "@/lib/game/types";
 import { PetSprite } from "./PetSprite";
+import { tpl, useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface MiniGameProps {
@@ -11,6 +12,7 @@ interface MiniGameProps {
 }
 
 export function MiniGame({ pet, onFinish }: MiniGameProps) {
+  const dict = useT();
   const [target] = useState(() => 1 + Math.floor(Math.random() * 3));
   const [picked, setPicked] = useState<number | null>(null);
 
@@ -31,7 +33,7 @@ export function MiniGame({ pet, onFinish }: MiniGameProps) {
       {!finished ? (
         <>
           <p className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-            Em qual mão está o petisco?
+            {dict.minigame.prompt}
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3].map((n) => (
@@ -54,14 +56,14 @@ export function MiniGame({ pet, onFinish }: MiniGameProps) {
               won ? "text-accent-cyan" : "text-accent-pink"
             )}
           >
-            {won ? "VOCÊ ACERTOU!" : `ERA ${target}`}
+            {won ? dict.minigame.won : tpl(dict.minigame.lostWas, { n: target })}
           </p>
           <button
             type="button"
             onClick={() => onFinish(won)}
             className="border-2 border-lcd-light bg-lcd-light px-4 py-2 text-[9px] uppercase tracking-widest text-lcd-dark"
           >
-            CONTINUAR
+            {dict.minigame.continue}
           </button>
         </div>
       )}

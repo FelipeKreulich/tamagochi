@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
+import { tpl, useLocale, useT } from "@/lib/i18n";
 import type { Achievement } from "@/lib/game/types";
 import { cn } from "@/lib/utils";
 
@@ -18,11 +19,16 @@ interface AchievementsDialogProps {
   unlocked: Achievement[];
 }
 
-function formatDate(ts: number): string {
-  const d = new Date(ts);
-  const dd = d.getDate().toString().padStart(2, "0");
-  const mm = (d.getMonth() + 1).toString().padStart(2, "0");
-  return `${dd}/${mm}`;
+function formatDate(ts: number, locale: string): string {
+  try {
+    const d = new Date(ts);
+    return d.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" });
+  } catch {
+    const d = new Date(ts);
+    const dd = d.getDate().toString().padStart(2, "0");
+    const mm = (d.getMonth() + 1).toString().padStart(2, "0");
+    return `${dd}/${mm}`;
+  }
 }
 
 export function AchievementsDialog({
@@ -30,6 +36,9 @@ export function AchievementsDialog({
   onOpenChange,
   unlocked,
 }: AchievementsDialogProps) {
+  const dict = useT();
+  const { locale } = useLocale();
+
   const unlockedById = new Map(unlocked.map((a) => [a.id, a]));
   const unlockedCount = unlocked.length;
   const total = ACHIEVEMENTS.length;
@@ -40,10 +49,14 @@ export function AchievementsDialog({
       <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-[11px] uppercase tracking-widest text-accent-pink">
-            CONQUISTAS
+            {dict.achievementsDialog.title}
           </DialogTitle>
           <DialogDescription className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-            {unlockedCount} de {total} desbloqueadas ({pct}%)
+            {tpl(dict.achievementsDialog.progress, {
+              current: unlockedCount,
+              total,
+              pct,
+            })}
           </DialogDescription>
         </DialogHeader>
 
@@ -65,6 +78,7 @@ export function AchievementsDialog({
           {ACHIEVEMENTS.map((def) => {
             const got = unlockedById.get(def.id);
             const isUnlocked = !!got?.unlockedAt;
+            const text = dict.achievements[def.key];
             return (
               <li
                 key={def.id}
@@ -96,14 +110,16 @@ export function AchievementsDialog({
                       isUnlocked ? "text-accent-cyan" : "text-lcd-light"
                     )}
                   >
-                    {def.title}
+                    {text.title}
                   </p>
                   <p className="text-[8px] leading-relaxed text-lcd-light/80">
-                    {def.description}
+                    {text.description}
                   </p>
                   {isUnlocked && got?.unlockedAt && (
                     <p className="text-[7px] uppercase tracking-widest text-lcd-light/50">
-                      obtida em {formatDate(got.unlockedAt)}
+                      {tpl(dict.achievementsDialog.unlockedOn, {
+                        date: formatDate(got.unlockedAt, locale),
+                      })}
                     </p>
                   )}
                 </div>

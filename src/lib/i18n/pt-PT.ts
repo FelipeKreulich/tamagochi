@@ -1,0 +1,172 @@
+import type { Dictionary } from "./types";
+
+const dict: Dictionary = {
+  common: {
+    loading: "A CARREGAR...",
+    ok: "OK",
+    cancel: "CANCELAR",
+    continue: "CONTINUAR",
+  },
+  header: {
+    mute: "MUTE",
+    sound: "SOM",
+    muteAriaOn: "Ativar som",
+    muteAriaOff: "Desativar som",
+    notifOn: "NOTIF",
+    notifOff: "NOTIF OFF",
+    notifAriaOn: "Desativar notificações",
+    notifAriaOff: "Ativar notificações",
+    languageLabel: "IDIOMA",
+  },
+  stats: {
+    hunger: "FOME",
+    happiness: "FELI",
+    energy: "ENER",
+    hygiene: "HIGI",
+    health: "SAUD",
+  },
+  stages: {
+    egg: "OVO",
+    baby: "BEBE",
+    child: "CRIANCA",
+    teen: "ADOLES.",
+    adult: "ADULTO",
+    elder: "IDOSO",
+  },
+  moodStatus: {
+    happy: "A SENTIR-SE OTIMO",
+    sad: "PARECE TRISTE...",
+    sick: "ESTA DOENTE!",
+    sleeping: "A DORMIR",
+    hungry: "COM FOME!",
+    dirty: "PRECISA DE BANHO",
+  },
+  flags: {
+    sleeping: "Zzz A DORMIR",
+    sick: "* DOENTE",
+    dirty: "SUJO",
+  },
+  actions: {
+    feed: "COMER",
+    candy: "DOCE",
+    play: "BRINCAR",
+    sleep: "DORMIR",
+    wake: "ACORDAR",
+    bath: "BANHO",
+    medicine: "REMEDIO",
+    clean: "LIMPAR",
+    reset: "REINICIAR",
+    title: "ACOES",
+  },
+  toasts: {
+    fed: "🍎 Refeição servida!",
+    candy: "🍬 Um docinho...",
+    goodMorning: "☀ Bom dia!",
+    goodNight: "💤 Boa noite...",
+    clean: "🛁 Limpinho!",
+    cured: "💊 Curado!",
+    poopCleaned: "🧹 Sujidade removida",
+    notSick: "O bichinho não está doente.",
+    nothingToClean: "Nada para limpar.",
+    minigameWon: "🎉 Acertaste!",
+    minigameLost: "😢 Falhaste...",
+    notifEnabled: "🔔 Notificações ativadas",
+    notifDenied: "Permissão negada pelo navegador",
+  },
+  start: {
+    askName: "COMO SE VAI CHAMAR O TEU BICHINHO?",
+    nameLabel: "NOME (2-12)",
+    speciesLabel: "ESCOLHE A ESPECIE",
+    hatch: "▶ CHOCAR OVO",
+    placeholder: "???",
+  },
+  death: {
+    rip: "R.I.P.",
+    lifeMinutes: "{n}min de vida",
+    newPet: "NOVO BICHINHO",
+  },
+  minigame: {
+    title: "ADIVINHA 1-3",
+    subtitle: "Acerta para deixar {name} feliz.",
+    prompt: "Em que mão está o petisco?",
+    won: "ACERTASTE!",
+    lostWas: "ERA {n}",
+    continue: "CONTINUAR",
+  },
+  reset: {
+    title: "APAGAR BICHINHO?",
+    subtitle: "Isto vai remover {name} sem ir para o cemitério.",
+    cancel: "CANCELAR",
+    confirm: "APAGAR",
+  },
+  graveyard: {
+    title: "CEMITERIO",
+    subtitle: "Bichinhos que partiram...",
+    empty: "Ainda não há bichinhos aqui.",
+  },
+  status: {
+    title: "STATUS",
+    achievements: "CONQUISTAS",
+    graveyard: "CEMITERIO",
+    tipTitle: "DICA",
+    tip: "Usa A/◀ e C/▶ para navegar, B/OK para executar.",
+  },
+  hud: {
+    pet: "BICHINHO",
+  },
+  achievementsDialog: {
+    title: "CONQUISTAS",
+    progress: "{current} de {total} desbloqueadas ({pct}%)",
+    unlockedOn: "obtida em {date}",
+  },
+  achievements: {
+    firstHatch: {
+      title: "PRIMEIRO CHOCAR",
+      description: "O teu primeiro bichinho nasceu!",
+    },
+    teenReached: {
+      title: "ADOLESCÊNCIA",
+      description: "O teu bichinho tornou-se adolescente.",
+    },
+    adultReached: {
+      title: "VIDA ADULTA",
+      description: "O teu bichinho chegou à fase adulta.",
+    },
+    elderReached: {
+      title: "IDOSO SÁBIO",
+      description: "O teu bichinho atingiu a velhice.",
+    },
+    firstWeek: {
+      title: "PRIMEIRA SEMANA",
+      description: "Um bichinho viveu durante uma sessão longa.",
+    },
+    neverSick: {
+      title: "SAÚDE DE FERRO",
+      description: "O bichinho nunca adoeceu até à fase adulta.",
+    },
+    fullLife: {
+      title: "VIDA PLENA",
+      description: "O teu bichinho morreu de velhice.",
+    },
+    petCollector: {
+      title: "COLECIONADOR",
+      description: "Ter 3 bichinhos no cemitério.",
+    },
+  },
+  causes: {
+    healthZero: "A saúde chegou a zero",
+    abandonment: "Abandono (múltiplos stats críticos)",
+    oldAge: "Velhice",
+    unknown: "Causas desconhecidas",
+  },
+  notifications: {
+    hunger: "{name} está com fome!",
+    happy: "{name} está triste!",
+    hygiene: "{name} está sujo!",
+    health: "{name} está a passar mal!",
+    sick: "{name} está doente! Dá-lhe remédio.",
+    poop: "{name} fez uma bagunça!",
+  },
+};
+
+export default dict;

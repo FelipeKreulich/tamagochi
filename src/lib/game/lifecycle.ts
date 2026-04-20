@@ -26,23 +26,25 @@ export function stageFromAge(seconds: number): LifeStage {
   return current;
 }
 
+export type DeathCauseKey = "healthZero" | "abandonment" | "oldAge";
+
 export function shouldDie(pet: Pet, now = Date.now()): {
   die: boolean;
-  cause: string | null;
+  cause: DeathCauseKey | null;
 } {
   if (!pet.isAlive) return { die: false, cause: null };
 
   if (pet.stats.health <= 0) {
-    return { die: true, cause: "Saúde chegou a zero" };
+    return { die: true, cause: "healthZero" };
   }
 
   if (criticalCount(pet.stats) >= 3) {
-    return { die: true, cause: "Abandono (múltiplos stats críticos)" };
+    return { die: true, cause: "abandonment" };
   }
 
   const age = ageSeconds(pet, now);
   if (age >= MAX_NATURAL_AGE_SECONDS) {
-    return { die: true, cause: "Velhice" };
+    return { die: true, cause: "oldAge" };
   }
 
   return { die: false, cause: null };

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Species } from "@/lib/game/types";
 import { Sprite } from "./Sprite";
 import { SPECIES_META } from "./sprites";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface StartScreenProps {
@@ -13,6 +14,7 @@ interface StartScreenProps {
 const SPECIES_ORDER: Species[] = ["blob", "dino", "cat"];
 
 export function StartScreen({ onStart }: StartScreenProps) {
+  const dict = useT();
   const [name, setName] = useState("");
   const [species, setSpecies] = useState<Species>("blob");
 
@@ -29,18 +31,16 @@ export function StartScreen({ onStart }: StartScreenProps) {
       }}
     >
       <p className="text-center text-[9px] uppercase tracking-widest text-accent-pink">
-        COMO VAI SE CHAMAR
-        <br />
-        SEU BICHINHO?
+        {dict.start.askName}
       </p>
       <label className="flex w-full flex-col items-center gap-2">
         <span className="text-[8px] uppercase tracking-widest text-lcd-light">
-          NOME (2-12)
+          {dict.start.nameLabel}
         </span>
         <input
           value={name}
           onChange={(e) => setName(e.target.value.toUpperCase().slice(0, 12))}
-          placeholder="???"
+          placeholder={dict.start.placeholder}
           maxLength={12}
           autoFocus
           className="w-full border-2 border-lcd-light bg-lcd-dark px-2 py-2 text-center text-[11px] uppercase tracking-widest text-lcd-light caret-accent-pink outline-none focus:border-accent-pink"
@@ -48,7 +48,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
       </label>
       <div className="w-full space-y-2">
         <p className="text-center text-[8px] uppercase tracking-widest text-lcd-light/80">
-          ESCOLHA A ESPECIE
+          {dict.start.speciesLabel}
         </p>
         <div className="grid grid-cols-3 gap-2">
           {SPECIES_ORDER.map((s) => {
@@ -90,7 +90,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
           !canStart && "cursor-not-allowed opacity-40"
         )}
       >
-        ▶ CHOCAR OVO
+        {dict.start.hatch}
       </button>
     </form>
   );

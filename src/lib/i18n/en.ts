@@ -1,0 +1,172 @@
+import type { Dictionary } from "./types";
+
+const dict: Dictionary = {
+  common: {
+    loading: "LOADING...",
+    ok: "OK",
+    cancel: "CANCEL",
+    continue: "CONTINUE",
+  },
+  header: {
+    mute: "MUTE",
+    sound: "SOUND",
+    muteAriaOn: "Enable sound",
+    muteAriaOff: "Mute sound",
+    notifOn: "NOTIF",
+    notifOff: "NOTIF OFF",
+    notifAriaOn: "Disable notifications",
+    notifAriaOff: "Enable notifications",
+    languageLabel: "LANG",
+  },
+  stats: {
+    hunger: "FOOD",
+    happiness: "HAPY",
+    energy: "ENER",
+    hygiene: "HYGN",
+    health: "HLTH",
+  },
+  stages: {
+    egg: "EGG",
+    baby: "BABY",
+    child: "CHILD",
+    teen: "TEEN",
+    adult: "ADULT",
+    elder: "ELDER",
+  },
+  moodStatus: {
+    happy: "FEELING GREAT",
+    sad: "LOOKS SAD...",
+    sick: "IS SICK!",
+    sleeping: "SLEEPING",
+    hungry: "HUNGRY!",
+    dirty: "NEEDS A BATH",
+  },
+  flags: {
+    sleeping: "Zzz SLEEPING",
+    sick: "* SICK",
+    dirty: "DIRTY",
+  },
+  actions: {
+    feed: "FEED",
+    candy: "CANDY",
+    play: "PLAY",
+    sleep: "SLEEP",
+    wake: "WAKE",
+    bath: "BATH",
+    medicine: "MED",
+    clean: "CLEAN",
+    reset: "RESET",
+    title: "ACTIONS",
+  },
+  toasts: {
+    fed: "🍎 Meal served!",
+    candy: "🍬 A sweet treat...",
+    goodMorning: "☀ Good morning!",
+    goodNight: "💤 Good night...",
+    clean: "🛁 Squeaky clean!",
+    cured: "💊 Cured!",
+    poopCleaned: "🧹 Mess cleaned up",
+    notSick: "Pet isn't sick.",
+    nothingToClean: "Nothing to clean.",
+    minigameWon: "🎉 Got it!",
+    minigameLost: "😢 Missed...",
+    notifEnabled: "🔔 Notifications enabled",
+    notifDenied: "Permission denied by the browser",
+  },
+  start: {
+    askName: "WHAT WILL YOU NAME YOUR PET?",
+    nameLabel: "NAME (2-12)",
+    speciesLabel: "CHOOSE A SPECIES",
+    hatch: "▶ HATCH EGG",
+    placeholder: "???",
+  },
+  death: {
+    rip: "R.I.P.",
+    lifeMinutes: "{n}min lived",
+    newPet: "NEW PET",
+  },
+  minigame: {
+    title: "GUESS 1-3",
+    subtitle: "Guess right to make {name} happy.",
+    prompt: "Which hand holds the treat?",
+    won: "YOU GOT IT!",
+    lostWas: "IT WAS {n}",
+    continue: "CONTINUE",
+  },
+  reset: {
+    title: "ERASE PET?",
+    subtitle: "This removes {name} without going to the graveyard.",
+    cancel: "CANCEL",
+    confirm: "ERASE",
+  },
+  graveyard: {
+    title: "GRAVEYARD",
+    subtitle: "Pets that passed away...",
+    empty: "No pets here yet.",
+  },
+  status: {
+    title: "STATUS",
+    achievements: "ACHIEVEMENTS",
+    graveyard: "GRAVEYARD",
+    tipTitle: "TIP",
+    tip: "Use A/◀ and C/▶ to navigate, B/OK to execute.",
+  },
+  hud: {
+    pet: "PET",
+  },
+  achievementsDialog: {
+    title: "ACHIEVEMENTS",
+    progress: "{current} of {total} unlocked ({pct}%)",
+    unlockedOn: "unlocked on {date}",
+  },
+  achievements: {
+    firstHatch: {
+      title: "FIRST HATCH",
+      description: "Your first pet was born!",
+    },
+    teenReached: {
+      title: "TEENAGE YEARS",
+      description: "Your pet became a teenager.",
+    },
+    adultReached: {
+      title: "ADULT LIFE",
+      description: "Your pet reached adulthood.",
+    },
+    elderReached: {
+      title: "WISE ELDER",
+      description: "Your pet reached elderhood.",
+    },
+    firstWeek: {
+      title: "FIRST WEEK",
+      description: "A pet lived through a long session.",
+    },
+    neverSick: {
+      title: "IRON HEALTH",
+      description: "Pet never got sick until adulthood.",
+    },
+    fullLife: {
+      title: "FULL LIFE",
+      description: "Your pet died of old age.",
+    },
+    petCollector: {
+      title: "COLLECTOR",
+      description: "Have 3 pets in the graveyard.",
+    },
+  },
+  causes: {
+    healthZero: "Health reached zero",
+    abandonment: "Neglect (multiple critical stats)",
+    oldAge: "Old age",
+    unknown: "Unknown causes",
+  },
+  notifications: {
+    hunger: "{name} is hungry!",
+    happy: "{name} is sad!",
+    hygiene: "{name} is dirty!",
+    health: "{name} isn't feeling well!",
+    sick: "{name} is sick! Give them medicine.",
+    poop: "{name} made a mess!",
+  },
+};
+
+export default dict;

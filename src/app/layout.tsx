@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LocaleProvider } from "@/lib/i18n";
 import "./globals.css";
 
 const pressStart2P = Press_Start_2P({
@@ -34,16 +35,18 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <TooltipProvider delay={200}>
-          {children}
-          <Toaster
-            position="top-center"
-            toastOptions={{
-              className:
-                "!font-pixel !rounded-none !border-2 !border-lcd-light !bg-lcd-dark !text-lcd-light",
-            }}
-          />
-        </TooltipProvider>
+        <LocaleProvider>
+          <TooltipProvider delay={200}>
+            {children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                className:
+                  "!font-pixel !rounded-none !border-2 !border-lcd-light !bg-lcd-dark !text-lcd-light",
+              }}
+            />
+          </TooltipProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

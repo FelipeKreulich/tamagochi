@@ -38,10 +38,12 @@ import { Sprite } from "./Sprite";
 import { eggFrames } from "./sprites/egg";
 import { SPECIES_META } from "./sprites";
 import { NotificationToggle } from "./NotificationToggle";
+import { LocaleToggle } from "./LocaleToggle";
 import { LcdScreen } from "./LcdScreen";
 import { DpadButtons } from "./DpadButtons";
 import { AchievementsDialog } from "./AchievementsDialog";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
+import { tpl, useT, type Dictionary } from "@/lib/i18n";
 import { toast } from "sonner";
 
 function StatusPanel({
@@ -50,17 +52,19 @@ function StatusPanel({
   graveyardCount,
   onOpenGraveyard,
   onOpenAchievements,
+  dict,
 }: {
   achievementCount: number;
   totalAchievements: number;
   graveyardCount: number;
   onOpenGraveyard: () => void;
   onOpenAchievements: () => void;
+  dict: Dictionary;
 }) {
   return (
     <div className="flex h-full flex-col gap-3 border-4 border-lcd-light bg-lcd-dark p-4 shadow-[6px_6px_0_0] shadow-lcd-dim">
       <p className="text-[8px] uppercase tracking-[0.3em] text-lcd-light/60">
-        STATUS
+        {dict.status.title}
       </p>
       <div className="space-y-3">
         <button
@@ -71,7 +75,7 @@ function StatusPanel({
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-accent-cyan" />
             <span className="text-[9px] uppercase tracking-widest text-lcd-light">
-              CONQUISTAS
+              {dict.status.achievements}
             </span>
           </div>
           <span className="text-sm text-accent-cyan">
@@ -86,7 +90,7 @@ function StatusPanel({
           <div className="flex items-center gap-2">
             <Skull className="h-4 w-4 text-accent-pink" />
             <span className="text-[9px] uppercase tracking-widest text-lcd-light">
-              CEMITERIO
+              {dict.status.graveyard}
             </span>
           </div>
           <span className="text-sm text-accent-pink">{graveyardCount}</span>
@@ -94,10 +98,10 @@ function StatusPanel({
       </div>
       <div className="mt-auto border-t-2 border-dashed border-lcd-light/30 pt-3">
         <p className="text-[7px] uppercase tracking-[0.25em] text-lcd-light/60">
-          DICA
+          {dict.status.tipTitle}
         </p>
         <p className="mt-1 text-[9px] leading-relaxed text-lcd-light/90">
-          Use A/◀ e C/▶ para navegar, B/OK para executar.
+          {dict.status.tip}
         </p>
       </div>
     </div>
@@ -109,12 +113,17 @@ const TOTAL_ACHIEVEMENTS = ACHIEVEMENTS.length;
 export function Game() {
   const tama = useTamagotchi();
   const { pet, hydrated, settings, actions, achievements, graveyard } = tama;
+  const dict = useT();
 
   const onStartScreen = !pet;
   const showIntroMusic = !hydrated || onStartScreen || (pet && !pet.isAlive);
 
   useIntroMusic({ muted: settings.muted, enabled: !!showIntroMusic });
-  useCriticalNotifications({ pet, enabled: settings.notificationsEnabled });
+  useCriticalNotifications({
+    pet,
+    enabled: settings.notificationsEnabled,
+    dict,
+  });
   usePetAmbience({
     pet,
     muted: settings.muted,
@@ -132,27 +141,27 @@ export function Game() {
     return [
       {
         id: "food",
-        label: "COMER",
+        label: dict.actions.feed,
         icon: Apple,
         onSelect: () => {
           actions.feedFood();
-          toast("🍎 Refeição servida!");
+          toast(dict.toasts.fed);
         },
         disabled: !pet.isAlive || pet.isSleeping,
       },
       {
         id: "candy",
-        label: "DOCE",
+        label: dict.actions.candy,
         icon: Candy,
         onSelect: () => {
           actions.feedCandy();
-          toast("🍬 Um docinho...");
+          toast(dict.toasts.candy);
         },
         disabled: !pet.isAlive || pet.isSleeping,
       },
       {
         id: "play",
-        label: "BRINCAR",
+        label: dict.actions.play,
         icon: Gamepad2,
         onSelect: () => {
           sfxMinigameStart({ muted: settings.muted });
@@ -162,65 +171,65 @@ export function Game() {
       },
       {
         id: "sleep",
-        label: pet.isSleeping ? "ACORDAR" : "DORMIR",
+        label: pet.isSleeping ? dict.actions.wake : dict.actions.sleep,
         icon: Moon,
         onSelect: () => {
           if (pet.isSleeping) {
             actions.wake();
-            toast("☀ Bom dia!");
+            toast(dict.toasts.goodMorning);
           } else {
             actions.sleep();
-            toast("💤 Boa noite...");
+            toast(dict.toasts.goodNight);
           }
         },
         disabled: !pet.isAlive,
       },
       {
         id: "bath",
-        label: "BANHO",
+        label: dict.actions.bath,
         icon: Bath,
         onSelect: () => {
           actions.bath();
-          toast("🛁 Limpinho!");
+          toast(dict.toasts.clean);
         },
         disabled: !pet.isAlive || pet.isSleeping,
       },
       {
         id: "medicine",
-        label: "REMEDIO",
+        label: dict.actions.medicine,
         icon: Pill,
         onSelect: () => {
           if (!pet.isSick) {
-            toast.error("Bichinho não está doente.");
+            toast.error(dict.toasts.notSick);
           } else {
             actions.medicine();
-            toast("💊 Curado!");
+            toast(dict.toasts.cured);
           }
         },
         disabled: !pet.isAlive,
       },
       {
         id: "clean",
-        label: "LIMPAR",
+        label: dict.actions.clean,
         icon: Trash2,
         onSelect: () => {
           if (pet.poopCount <= 0) {
-            toast.error("Nada para limpar.");
+            toast.error(dict.toasts.nothingToClean);
           } else {
             actions.cleanPoop();
-            toast("🧹 Sujeira removida");
+            toast(dict.toasts.poopCleaned);
           }
         },
         disabled: !pet.isAlive,
       },
       {
         id: "reset",
-        label: "RESET",
+        label: dict.actions.reset,
         icon: RotateCcw,
         onSelect: () => setResetOpen(true),
       },
     ];
-  }, [pet, actions, settings.muted]);
+  }, [pet, actions, settings.muted, dict]);
 
   const handleA = () => {
     if (!pet) return;
@@ -240,7 +249,7 @@ export function Game() {
     return (
       <div className="flex min-h-screen items-center justify-center text-[10px] uppercase tracking-widest text-lcd-light">
         <span className="animate-[lcdflicker_1s_steps(2)_infinite]">
-          CARREGANDO...
+          {dict.common.loading}
         </span>
       </div>
     );
@@ -248,7 +257,6 @@ export function Game() {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-[radial-gradient(ellipse_at_top,#112317_0%,#050905_70%)]">
-      {/* Decorative side pixel columns */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-0 hidden w-6 bg-[repeating-linear-gradient(0deg,var(--lcd-light)_0,var(--lcd-light)_4px,transparent_4px,transparent_12px)] opacity-20 md:block"
@@ -258,7 +266,6 @@ export function Game() {
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-6 bg-[repeating-linear-gradient(0deg,var(--lcd-light)_0,var(--lcd-light)_4px,transparent_4px,transparent_12px)] opacity-20 md:block"
       />
 
-      {/* Top bar */}
       <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b-4 border-lcd-light bg-lcd-dark/80 px-4 py-3 backdrop-blur sm:px-8">
         <div className="flex items-center gap-3">
           <span
@@ -273,8 +280,8 @@ export function Game() {
           <MuteToggle
             muted={settings.muted}
             onToggle={() => actions.setMuted(!settings.muted)}
-            label={settings.muted ? "MUTE" : "SOM"}
           />
+          <LocaleToggle />
           <NotificationToggle
             enabled={settings.notificationsEnabled}
             onChange={actions.setNotificationsEnabled}
@@ -282,16 +289,13 @@ export function Game() {
         </div>
       </header>
 
-      {/* Main content */}
       <div className="relative z-10 flex flex-1 flex-col gap-6 p-4 sm:p-8 md:gap-8 lg:grid lg:grid-cols-[300px_1fr_300px] lg:items-stretch">
-        {/* Left panel (HUD) */}
         {pet && (
           <aside className="order-2 lg:order-1">
             <HUD pet={pet} />
           </aside>
         )}
 
-        {/* Center: LCD Screen */}
         <section className="order-1 flex flex-col items-center justify-center gap-6 lg:order-2">
           <LcdScreen className="max-w-2xl">
             <div className="flex min-h-[260px] flex-col items-center justify-center gap-5 sm:min-h-[320px]">
@@ -319,12 +323,10 @@ export function Game() {
                       )}
                     </div>
                     <p className="text-center text-[9px] uppercase tracking-[0.3em] text-lcd-light/70">
-                      {pet.mood === "happy" && "SE SENTINDO OTIMO"}
-                      {pet.mood === "sad" && "PARECE TRISTE..."}
-                      {pet.mood === "sick" && "ESTA DOENTE!"}
-                      {pet.mood === "sleeping" && "DORMINDO"}
-                      {pet.mood === "hungry" && "COM FOME!"}
-                      {pet.mood === "dirty" && "PRECISA DE BANHO"}
+                      {pet.mood !== "dead" &&
+                        dict.moodStatus[
+                          pet.mood as keyof typeof dict.moodStatus
+                        ]}
                     </p>
                   </>
                 )
@@ -337,7 +339,6 @@ export function Game() {
           )}
         </section>
 
-        {/* Right panel */}
         {pet && (
           <aside className="order-3">
             <StatusPanel
@@ -346,17 +347,17 @@ export function Game() {
               graveyardCount={graveyard.length}
               onOpenGraveyard={() => setGraveyardOpen(true)}
               onOpenAchievements={() => setAchievementsOpen(true)}
+              dict={dict}
             />
           </aside>
         )}
       </div>
 
-      {/* Bottom: action grid */}
       {pet && pet.isAlive && (
         <footer className="relative z-10 border-t-4 border-lcd-light bg-lcd-dark/80 p-4 sm:p-6">
           <div className="mx-auto max-w-5xl space-y-3">
             <p className="text-center text-[8px] uppercase tracking-[0.4em] text-lcd-light/60">
-              ACOES
+              {dict.actions.title}
             </p>
             <ActionMenu
               items={actionItems}
@@ -371,10 +372,10 @@ export function Game() {
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-[11px] uppercase tracking-widest text-accent-pink">
-              ADIVINHE 1-3
+              {dict.minigame.title}
             </DialogTitle>
             <DialogDescription className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-              Acerte pra deixar {pet?.name} feliz.
+              {tpl(dict.minigame.subtitle, { name: pet?.name ?? "" })}
             </DialogDescription>
           </DialogHeader>
           {pet && (
@@ -382,7 +383,7 @@ export function Game() {
               pet={pet}
               onFinish={(won) => {
                 actions.playMinigame(won);
-                toast(won ? "🎉 Acertou!" : "😢 Errou...");
+                toast(won ? dict.toasts.minigameWon : dict.toasts.minigameLost);
                 setMiniOpen(false);
               }}
             />
@@ -394,10 +395,10 @@ export function Game() {
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-[11px] uppercase tracking-widest text-accent-pink">
-              APAGAR BICHINHO?
+              {dict.reset.title}
             </DialogTitle>
             <DialogDescription className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-              Isso vai remover {pet?.name} sem ir pro cemitério.
+              {tpl(dict.reset.subtitle, { name: pet?.name ?? "" })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex flex-row gap-2">
@@ -406,7 +407,7 @@ export function Game() {
               onClick={() => setResetOpen(false)}
               className="flex-1 border-2 border-lcd-light bg-lcd-dark px-3 py-2 text-[9px] uppercase tracking-widest text-lcd-light"
             >
-              CANCELAR
+              {dict.reset.cancel}
             </button>
             <button
               type="button"
@@ -416,7 +417,7 @@ export function Game() {
               }}
               className="flex-1 border-2 border-accent-pink bg-accent-pink/20 px-3 py-2 text-[9px] uppercase tracking-widest text-accent-pink"
             >
-              APAGAR
+              {dict.reset.confirm}
             </button>
           </DialogFooter>
         </DialogContent>
@@ -432,32 +433,38 @@ export function Game() {
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-[11px] uppercase tracking-widest text-accent-pink">
-              CEMITERIO
+              {dict.graveyard.title}
             </DialogTitle>
             <DialogDescription className="text-[9px] uppercase tracking-widest text-lcd-light/80">
-              Bichinhos que partiram...
+              {dict.graveyard.subtitle}
             </DialogDescription>
           </DialogHeader>
           {graveyard.length === 0 ? (
             <p className="text-center text-[9px] uppercase tracking-widest text-lcd-light/60">
-              Nenhum bichinho aqui ainda.
+              {dict.graveyard.empty}
             </p>
           ) : (
             <ul className="max-h-80 space-y-2 overflow-y-auto pr-1">
-              {graveyard.map((g) => (
-                <li
-                  key={g.id}
-                  className="border-2 border-lcd-light/40 bg-lcd-dim/60 p-3 text-[9px] uppercase tracking-widest"
-                >
-                  <div className="flex justify-between text-lcd-light">
-                    <span>{g.name}</span>
-                    <span className="text-accent-cyan">{g.species}</span>
-                  </div>
-                  <div className="mt-1 text-[8px] text-lcd-light/70">
-                    {g.ageMinutes}min · {g.causeOfDeath}
-                  </div>
-                </li>
-              ))}
+              {graveyard.map((g) => {
+                const cause =
+                  g.causeOfDeath in dict.causes
+                    ? dict.causes[g.causeOfDeath as keyof typeof dict.causes]
+                    : g.causeOfDeath;
+                return (
+                  <li
+                    key={g.id}
+                    className="border-2 border-lcd-light/40 bg-lcd-dim/60 p-3 text-[9px] uppercase tracking-widest"
+                  >
+                    <div className="flex justify-between text-lcd-light">
+                      <span>{g.name}</span>
+                      <span className="text-accent-cyan">{g.species}</span>
+                    </div>
+                    <div className="mt-1 text-[8px] text-lcd-light/70">
+                      {g.ageMinutes}min · {cause}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </DialogContent>
