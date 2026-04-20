@@ -152,6 +152,46 @@ const dict: Dictionary = {
       title: "COLLECTOR",
       description: "Have 3 pets in the graveyard.",
     },
+    chef: {
+      title: "CHEF",
+      description: "Serve 10 healthy meals.",
+    },
+    sweetTooth: {
+      title: "SWEET TOOTH",
+      description: "Give 5 candies to the pet.",
+    },
+    bathMaster: {
+      title: "BATH MASTER",
+      description: "Give 5 baths to the pet.",
+    },
+    gamer: {
+      title: "GAMER",
+      description: "Play the minigame 5 times.",
+    },
+    champion: {
+      title: "CHAMPION",
+      description: "Win the minigame 5 times.",
+    },
+    sleepyHead: {
+      title: "SLEEPYHEAD",
+      description: "Put the pet to sleep 3 times.",
+    },
+    nurse: {
+      title: "NURSE",
+      description: "Give medicine 3 times.",
+    },
+    cleanFreak: {
+      title: "CLEAN FREAK",
+      description: "Clean the mess 5 times.",
+    },
+    marathon: {
+      title: "MARATHONER",
+      description: "A pet reached 120 minutes old.",
+    },
+    legend: {
+      title: "LIVING LEGEND",
+      description: "A pet reached 180 minutes old.",
+    },
   },
   causes: {
     healthZero: "Health reached zero",
@@ -166,6 +206,39 @@ const dict: Dictionary = {
     health: "{name} isn't feeling well!",
     sick: "{name} is sick! Give them medicine.",
     poop: "{name} made a mess!",
+  },
+  help: {
+    title: "HELP",
+    subtitle: "ABOUT THE GAME AND SHORTCUTS",
+    aboutTitle: "WHAT IS A TAMAGOTCHI?",
+    aboutIntro:
+      "Tamagotchi is a virtual pet created by Bandai and released in Japan in 1996. The name comes from 'tamago' (egg, in Japanese) + 'watch'. The egg-shaped device demanded constant attention: feed, play, sleep, clean.",
+    aboutHistory:
+      "It became a worldwide craze in the 90s. Millions of units sold and lots of kids smuggled them into school. If you neglected your pet for too long, it would die — and come back without memory.",
+    aboutWhy:
+      "The success came from a simple mix: pocket-sized responsibility, unmistakable LCD aesthetic, catchy beeps and the gentle stress of caring for something fragile. This web version tries to capture that same vibe — with a touch of modern nostalgia.",
+    shortcutsTitle: "KEYBOARD SHORTCUTS",
+    statsTitle: "WHAT EACH STAT DOES",
+    shortcuts: {
+      prev: "← or A — select previous",
+      next: "→ or D — select next",
+      select: "Enter or Space — execute",
+      direct: "1 to 8 — pick action directly",
+      mute: "M — toggle sound",
+      notif: "N — toggle notifications",
+      language: "L — cycle language",
+      help: "? or H — open this help",
+    },
+    statsInfo: {
+      hunger: "FOOD — feed with healthy food or candy (careful, candy can make them sick).",
+      happiness: "HAPPINESS — play, win the minigame, don't neglect them.",
+      energy: "ENERGY — sleep restores it; waking a tired pet makes them sad.",
+      hygiene: "HYGIENE — bathe them, clean up messes that appear.",
+      health: "HEALTH — critical stats drain health; zero health = death.",
+    },
+    close: "CLOSE",
+    helpAria: "Open help",
+    helpLabel: "HELP",
   },
 };
 

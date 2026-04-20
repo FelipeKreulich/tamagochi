@@ -152,6 +152,46 @@ const dict: Dictionary = {
       title: "COLECIONADOR",
       description: "Ter 3 bichinhos no cemitério.",
     },
+    chef: {
+      title: "CHEF",
+      description: "Serviu 10 refeições saudáveis.",
+    },
+    sweetTooth: {
+      title: "GULOSO",
+      description: "Deu 5 doces ao bichinho.",
+    },
+    bathMaster: {
+      title: "AMIGO DAS AGUAS",
+      description: "Deu 5 banhos ao bichinho.",
+    },
+    gamer: {
+      title: "JOGADOR",
+      description: "Jogou o minijogo 5 vezes.",
+    },
+    champion: {
+      title: "CAMPEAO",
+      description: "Venceu o minijogo 5 vezes.",
+    },
+    sleepyHead: {
+      title: "DORMINHOCO",
+      description: "Adormeceu o bichinho 3 vezes.",
+    },
+    nurse: {
+      title: "ENFERMEIRO",
+      description: "Deu remédio 3 vezes.",
+    },
+    cleanFreak: {
+      title: "LIMPINHO",
+      description: "Limpou a sujidade 5 vezes.",
+    },
+    marathon: {
+      title: "MARATONISTA",
+      description: "Um bichinho chegou aos 120 minutos de vida.",
+    },
+    legend: {
+      title: "LENDA VIVA",
+      description: "Um bichinho chegou aos 180 minutos de vida.",
+    },
   },
   causes: {
     healthZero: "A saúde chegou a zero",
@@ -166,6 +206,39 @@ const dict: Dictionary = {
     health: "{name} está a passar mal!",
     sick: "{name} está doente! Dá-lhe remédio.",
     poop: "{name} fez uma bagunça!",
+  },
+  help: {
+    title: "AJUDA",
+    subtitle: "SOBRE O JOGO E ATALHOS",
+    aboutTitle: "O QUE E UM TAMAGOTCHI?",
+    aboutIntro:
+      "Tamagotchi é um bichinho virtual criado pela Bandai e lançado no Japão em 1996. O nome vem de 'tamago' (ovo em japonês) + 'watch' (relógio). O aparelho em forma de ovo pedia atenção constante para comer, brincar, dormir e ser limpo.",
+    aboutHistory:
+      "Tornou-se febre mundial nos anos 90. Milhões de unidades vendidas e muitos miúdos levavam-no escondido para a escola. Se te esquecesses dele durante muito tempo, morria — e regressava sem memória.",
+    aboutWhy:
+      "O sucesso vem de uma mistura simples: responsabilidade de bolso, estética LCD inconfundível, bipes marcantes e a tensão gira de cuidar de algo frágil. Esta versão web tenta captar essa mesma vibe — com um toque de nostalgia moderna.",
+    shortcutsTitle: "ATALHOS DE TECLADO",
+    statsTitle: "O QUE CADA STAT FAZ",
+    shortcuts: {
+      prev: "← ou A — selecionar anterior",
+      next: "→ ou D — selecionar seguinte",
+      select: "Enter ou Espaço — executar",
+      direct: "1 a 8 — escolher ação direto",
+      mute: "M — ligar/desligar som",
+      notif: "N — alternar notificações",
+      language: "L — alternar idioma",
+      help: "? ou H — abrir esta ajuda",
+    },
+    statsInfo: {
+      hunger: "FOME — alimenta com comida saudável ou doce (cuidado, o doce faz mal).",
+      happiness: "FELICIDADE — brinca, acerta no minijogo, evita abandonar.",
+      energy: "ENERGIA — dormir recupera; acordá-lo cansado deixa-o triste.",
+      hygiene: "HIGIENE — dá banho, limpa a sujidade que aparece.",
+      health: "SAÚDE — stats críticos drenam a saúde; saúde a zero = morte.",
+    },
+    close: "FECHAR",
+    helpAria: "Abrir ajuda",
+    helpLabel: "AJUDA",
   },
 };
 

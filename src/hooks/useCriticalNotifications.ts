@@ -42,7 +42,7 @@ export function useCriticalNotifications({ pet, enabled, dict }: Options) {
       if (now - last < COOLDOWN_MS) return;
       lastFiredRef.current[key] = now;
       try {
-        new Notification(`Tamagochi — ${pet.name}`, {
+        new Notification(`Tamagotchi — ${pet.name}`, {
           body,
           icon: "/tamagochi.ico",
           tag: `tamagochi-${key}`,

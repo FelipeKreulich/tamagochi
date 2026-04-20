@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Apple,
   Bath,
@@ -42,8 +42,20 @@ import { LocaleToggle } from "./LocaleToggle";
 import { LcdScreen } from "./LcdScreen";
 import { DpadButtons } from "./DpadButtons";
 import { AchievementsDialog } from "./AchievementsDialog";
+import { HelpButton } from "./HelpButton";
+import { HelpDialog } from "./HelpDialog";
+import { EvolutionFlash } from "./EvolutionFlash";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
-import { tpl, useT, type Dictionary } from "@/lib/i18n";
+import { hasEvolved } from "@/lib/game/lifecycle";
+import { useKeyboardControls } from "@/hooks/useKeyboardControls";
+import {
+  LOCALES,
+  tpl,
+  useLocale,
+  useT,
+  type Dictionary,
+} from "@/lib/i18n";
+import type { LifeStage } from "@/lib/game/types";
 import { toast } from "sonner";
 
 function StatusPanel({
@@ -114,6 +126,7 @@ export function Game() {
   const tama = useTamagotchi();
   const { pet, hydrated, settings, actions, achievements, graveyard } = tama;
   const dict = useT();
+  const { locale, setLocale } = useLocale();
 
   const onStartScreen = !pet;
   const showIntroMusic = !hydrated || onStartScreen || (pet && !pet.isAlive);
@@ -135,6 +148,28 @@ export function Game() {
   const [resetOpen, setResetOpen] = useState(false);
   const [graveyardOpen, setGraveyardOpen] = useState(false);
   const [achievementsOpen, setAchievementsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [evolvedStage, setEvolvedStage] = useState<LifeStage | null>(null);
+  const lastStageRef = useRef<LifeStage | null>(null);
+
+  // Detect stage changes to trigger the evolution flash.
+  useEffect(() => {
+    if (!pet) {
+      lastStageRef.current = null;
+      return;
+    }
+    const previous = lastStageRef.current;
+    lastStageRef.current = pet.stage;
+    if (
+      previous &&
+      previous !== pet.stage &&
+      hasEvolved(previous, pet.stage)
+    ) {
+      setEvolvedStage(pet.stage);
+      const t = window.setTimeout(() => setEvolvedStage(null), 2200);
+      return () => window.clearTimeout(t);
+    }
+  }, [pet]);
 
   const actionItems = useMemo<ActionItem[]>(() => {
     if (!pet) return [];
@@ -232,18 +267,45 @@ export function Game() {
   }, [pet, actions, settings.muted, dict]);
 
   const handleA = () => {
-    if (!pet) return;
+    if (!pet || !pet.isAlive) return;
     setMenuIndex((i) => (i - 1 + actionItems.length) % actionItems.length);
   };
   const handleB = () => {
-    if (!pet) return;
+    if (!pet || !pet.isAlive) return;
     const item = actionItems[menuIndex];
     if (item && !item.disabled) item.onSelect();
   };
   const handleC = () => {
-    if (!pet) return;
+    if (!pet || !pet.isAlive) return;
     setMenuIndex((i) => (i + 1) % actionItems.length);
   };
+
+  const cycleLocale = () => {
+    const i = LOCALES.indexOf(locale);
+    setLocale(LOCALES[(i + 1) % LOCALES.length]);
+  };
+
+  useKeyboardControls({
+    onPrev: handleA,
+    onNext: handleC,
+    onSelect: handleB,
+    onToggleMute: () => actions.setMuted(!settings.muted),
+    onToggleNotif: () => {
+      if (settings.notificationsEnabled) {
+        actions.setNotificationsEnabled(false);
+      }
+    },
+    onCycleLocale: cycleLocale,
+    onToggleHelp: () => setHelpOpen((o) => !o),
+    onDirectAction: (i) => {
+      if (!pet || !pet.isAlive) return;
+      const item = actionItems[i];
+      if (item && !item.disabled) {
+        setMenuIndex(i);
+        item.onSelect();
+      }
+    },
+  });
 
   if (!hydrated) {
     return (
@@ -273,7 +335,7 @@ export function Game() {
             className="h-3 w-3 animate-[ledpulse_1.6s_steps(2)_infinite] bg-accent-pink"
           />
           <h1 className="text-[12px] tracking-[0.4em] text-lcd-light sm:text-sm">
-            TAMA<span className="text-accent-pink">—</span>GOCHI
+            TAMA<span className="text-accent-pink">—</span>GOTCHI
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -286,6 +348,7 @@ export function Game() {
             enabled={settings.notificationsEnabled}
             onChange={actions.setNotificationsEnabled}
           />
+          <HelpButton onClick={() => setHelpOpen(true)} />
         </div>
       </header>
 
@@ -428,6 +491,10 @@ export function Game() {
         onOpenChange={setAchievementsOpen}
         unlocked={achievements}
       />
+
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+
+      {evolvedStage && <EvolutionFlash stage={evolvedStage} />}
 
       <Dialog open={graveyardOpen} onOpenChange={setGraveyardOpen}>
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-md">

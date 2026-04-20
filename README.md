@@ -1,6 +1,6 @@
-# 🥚 Tamagochi — Retro Pet
+# 🥚 Tamagotchi — Retro Pet
 
-![Tamagochi Retro Pet — gameplay](./public/screenshots/projeto-tamagochi.png)
+![Tamagotchi Retro Pet — gameplay](./public/screenshots/projeto-tamagochi.png)
 
 **Lembra daquele bichinho virtual preso no chaveiro dos anos 90 que vivia
 pedindo comida no meio da aula?** A gente trouxe ele de volta — com toda a

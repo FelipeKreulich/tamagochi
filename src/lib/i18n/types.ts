@@ -128,6 +128,16 @@ export interface Dictionary {
     neverSick: { title: string; description: string };
     fullLife: { title: string; description: string };
     petCollector: { title: string; description: string };
+    chef: { title: string; description: string };
+    sweetTooth: { title: string; description: string };
+    bathMaster: { title: string; description: string };
+    gamer: { title: string; description: string };
+    champion: { title: string; description: string };
+    sleepyHead: { title: string; description: string };
+    nurse: { title: string; description: string };
+    cleanFreak: { title: string; description: string };
+    marathon: { title: string; description: string };
+    legend: { title: string; description: string };
   };
   causes: {
     healthZero: string;
@@ -142,5 +152,35 @@ export interface Dictionary {
     health: string;
     sick: string;
     poop: string;
+  };
+  help: {
+    title: string;
+    subtitle: string;
+    aboutTitle: string;
+    aboutIntro: string;
+    aboutHistory: string;
+    aboutWhy: string;
+    shortcutsTitle: string;
+    statsTitle: string;
+    shortcuts: {
+      prev: string;
+      next: string;
+      select: string;
+      direct: string;
+      mute: string;
+      notif: string;
+      language: string;
+      help: string;
+    };
+    statsInfo: {
+      hunger: string;
+      happiness: string;
+      energy: string;
+      hygiene: string;
+      health: string;
+    };
+    close: string;
+    helpAria: string;
+    helpLabel: string;
   };
 }

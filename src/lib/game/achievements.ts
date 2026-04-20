@@ -10,7 +10,17 @@ export type AchievementKey =
   | "firstWeek"
   | "neverSick"
   | "fullLife"
-  | "petCollector";
+  | "petCollector"
+  | "chef"
+  | "sweetTooth"
+  | "bathMaster"
+  | "gamer"
+  | "champion"
+  | "sleepyHead"
+  | "nurse"
+  | "cleanFreak"
+  | "marathon"
+  | "legend";
 
 export interface AchievementDef {
   key: AchievementKey;
@@ -50,7 +60,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     id: "never-sick",
     check: (s) =>
       !!s.pet &&
-      !s.pet.isSick &&
+      !s.pet.everSick &&
       ["adult", "elder"].includes(s.pet.stage),
   },
   {
@@ -62,6 +72,56 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     key: "petCollector",
     id: "pet-collector",
     check: (s) => s.graveyard.length >= 3,
+  },
+  {
+    key: "chef",
+    id: "chef",
+    check: (s) => !!s.pet && s.pet.counters.feed >= 10,
+  },
+  {
+    key: "sweetTooth",
+    id: "sweet-tooth",
+    check: (s) => !!s.pet && s.pet.counters.candy >= 5,
+  },
+  {
+    key: "bathMaster",
+    id: "bath-master",
+    check: (s) => !!s.pet && s.pet.counters.bath >= 5,
+  },
+  {
+    key: "gamer",
+    id: "gamer",
+    check: (s) => !!s.pet && s.pet.counters.play >= 5,
+  },
+  {
+    key: "champion",
+    id: "champion",
+    check: (s) => !!s.pet && s.pet.counters.playWins >= 5,
+  },
+  {
+    key: "sleepyHead",
+    id: "sleepy-head",
+    check: (s) => !!s.pet && s.pet.counters.sleep >= 3,
+  },
+  {
+    key: "nurse",
+    id: "nurse",
+    check: (s) => !!s.pet && s.pet.counters.medicine >= 3,
+  },
+  {
+    key: "cleanFreak",
+    id: "clean-freak",
+    check: (s) => !!s.pet && s.pet.counters.clean >= 5,
+  },
+  {
+    key: "marathon",
+    id: "marathon",
+    check: (s) => !!s.pet && s.pet.ageMinutes >= 120,
+  },
+  {
+    key: "legend",
+    id: "legend",
+    check: (s) => !!s.pet && s.pet.ageMinutes >= 180,
   },
 ];
 

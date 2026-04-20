@@ -1,3 +1,4 @@
+import { normalizePet } from "@/lib/game/create";
 import {
   INITIAL_SAVE_STATE,
   STORAGE_KEY,
@@ -45,6 +46,7 @@ export function migrate(raw: unknown): SaveState {
     return {
       ...INITIAL_SAVE_STATE,
       ...raw,
+      pet: normalizePet(raw.pet),
       settings: { ...INITIAL_SAVE_STATE.settings, ...raw.settings },
     };
   }

@@ -28,6 +28,16 @@ describe("game types", () => {
         hygiene: 100,
         health: 100,
       },
+      counters: {
+        feed: 0,
+        candy: 0,
+        bath: 0,
+        play: 0,
+        playWins: 0,
+        sleep: 0,
+        medicine: 0,
+        clean: 0,
+      },
       bornAt: 0,
       ageMinutes: 0,
       lastTickAt: 0,
@@ -37,6 +47,7 @@ describe("game types", () => {
       poopCount: 0,
       isSleeping: false,
       isSick: false,
+      everSick: false,
     };
     expect(pet.isAlive).toBe(true);
     expect(pet.stage).toBe("egg");

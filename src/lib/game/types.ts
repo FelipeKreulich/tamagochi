@@ -25,6 +25,17 @@ export interface Stats {
   health: number;
 }
 
+export interface Counters {
+  feed: number;
+  candy: number;
+  bath: number;
+  play: number;
+  playWins: number;
+  sleep: number;
+  medicine: number;
+  clean: number;
+}
+
 export interface Pet {
   id: string;
   name: string;
@@ -32,6 +43,7 @@ export interface Pet {
   stage: LifeStage;
   mood: Mood;
   stats: Stats;
+  counters: Counters;
   bornAt: number;
   ageMinutes: number;
   lastTickAt: number;
@@ -41,7 +53,19 @@ export interface Pet {
   poopCount: number;
   isSleeping: boolean;
   isSick: boolean;
+  everSick: boolean;
 }
+
+export const EMPTY_COUNTERS: Counters = {
+  feed: 0,
+  candy: 0,
+  bath: 0,
+  play: 0,
+  playWins: 0,
+  sleep: 0,
+  medicine: 0,
+  clean: 0,
+};
 
 export interface Achievement {
   id: string;

@@ -13,7 +13,7 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "Tamagochi — Retro Pet",
+  title: "Tamagotchi — Retro Pet",
   description:
     "Jogo estilo Tamagotchi com estética retrô dos anos 90. Cuide do seu bichinho virtual!",
   icons: {
