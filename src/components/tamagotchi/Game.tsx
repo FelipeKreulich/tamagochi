@@ -48,6 +48,8 @@ import { HelpButton } from "./HelpButton";
 import { HelpDialog } from "./HelpDialog";
 import { HistoryDialog } from "./HistoryDialog";
 import { EvolutionFlash } from "./EvolutionFlash";
+import { AchievementBanner } from "./AchievementBanner";
+import type { Achievement } from "@/lib/game/types";
 import { DaycareDialog } from "./DaycareDialog";
 import { ShopDialog } from "./ShopDialog";
 import { LineChart, Coins, HeartPulse } from "lucide-react";
@@ -254,6 +256,35 @@ export function Game() {
   };
   const [evolvedStage, setEvolvedStage] = useState<LifeStage | null>(null);
   const lastStageRef = useRef<LifeStage | null>(null);
+  const seenAchievementsRef = useRef<Set<string>>(new Set());
+  const bannerQueueRef = useRef<Achievement[]>([]);
+  const [currentBanner, setCurrentBanner] = useState<Achievement | null>(null);
+
+  // Detect newly unlocked achievements and queue banners.
+  useEffect(() => {
+    if (!hydrated) return;
+    const seen = seenAchievementsRef.current;
+    if (seen.size === 0) {
+      achievements.forEach((a) => seen.add(a.id));
+      return;
+    }
+    const newOnes = achievements.filter(
+      (a) => a.unlockedAt && !seen.has(a.id)
+    );
+    if (newOnes.length === 0) return;
+    newOnes.forEach((a) => seen.add(a.id));
+    bannerQueueRef.current.push(...newOnes);
+    setCurrentBanner((cur) => cur ?? bannerQueueRef.current.shift() ?? null);
+  }, [achievements, hydrated]);
+
+  // Advance the banner queue: hide current after 3.4s, then show next.
+  useEffect(() => {
+    if (!currentBanner) return;
+    const t = window.setTimeout(() => {
+      setCurrentBanner(bannerQueueRef.current.shift() ?? null);
+    }, 3400);
+    return () => window.clearTimeout(t);
+  }, [currentBanner]);
 
   // Detect stage changes to trigger the evolution flash.
   useEffect(() => {
@@ -671,6 +702,7 @@ export function Game() {
       />
 
       {evolvedStage && <EvolutionFlash stage={evolvedStage} />}
+      {currentBanner && <AchievementBanner achievement={currentBanner} />}
 
       <Dialog open={graveyardOpen} onOpenChange={setGraveyardOpen}>
         <DialogContent className="rounded-none border-4 border-lcd-light bg-lcd-dark font-pixel text-lcd-light sm:max-w-md">

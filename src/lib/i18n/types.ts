@@ -212,6 +212,7 @@ export interface Dictionary {
     title: string;
     progress: string;
     unlockedOn: string;
+    unlockedBanner: string;
   };
   achievements: {
     firstHatch: { title: string; description: string };

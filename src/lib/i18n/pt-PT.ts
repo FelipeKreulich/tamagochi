@@ -216,6 +216,7 @@ const dict: Dictionary = {
     title: "CONQUISTAS",
     progress: "{current} de {total} desbloqueadas ({pct}%)",
     unlockedOn: "obtida em {date}",
+    unlockedBanner: "CONQUISTA DESBLOQUEADA",
   },
   achievements: {
     firstHatch: {
