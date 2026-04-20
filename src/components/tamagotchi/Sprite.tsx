@@ -16,6 +16,8 @@ export interface SpriteProps {
   pixelSize?: number;
   className?: string;
   flicker?: boolean;
+  /** Controlled frame index. When provided, parent drives animation. */
+  frameIndex?: number;
 }
 
 export function Sprite({
@@ -25,16 +27,20 @@ export function Sprite({
   pixelSize = 8,
   className,
   flicker = true,
+  frameIndex: controlledIndex,
 }: SpriteProps) {
-  const [index, setIndex] = useState(0);
+  const [internalIndex, setInternalIndex] = useState(0);
+  const isControlled = controlledIndex !== undefined;
+  const index = isControlled ? controlledIndex : internalIndex;
 
   useEffect(() => {
+    if (isControlled) return;
     if (frames.length <= 1) return;
     const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % frames.length);
+      setInternalIndex((i) => (i + 1) % frames.length);
     }, frameDurationMs);
     return () => window.clearInterval(id);
-  }, [frames.length, frameDurationMs]);
+  }, [isControlled, frames.length, frameDurationMs]);
 
   const grid = frames[index] ?? frames[0];
   if (!grid) return null;

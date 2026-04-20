@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { Pet } from "@/lib/game/types";
 import { cn } from "@/lib/utils";
 import { Sprite } from "./Sprite";
@@ -10,6 +11,7 @@ import {
   type Accessory,
   type AccessorySlot,
 } from "./accessories/catalog";
+import { frameOffsetX } from "./accessories/frameOffsets";
 
 interface PetSpriteProps {
   pet: Pet;
@@ -38,6 +40,20 @@ export function PetSprite({
     pet.variant
   );
 
+  const frameDur = pet.mood === "sleeping" ? 1200 : 420;
+  const [frameIndex, setFrameIndex] = useState(0);
+
+  useEffect(() => {
+    if (frames.length <= 1) return;
+    const id = window.setInterval(() => {
+      setFrameIndex((i) => (i + 1) % frames.length);
+    }, frameDur);
+    return () => window.clearInterval(id);
+  }, [frames.length, frameDur]);
+
+  const accessoryDx =
+    frameOffsetX(pet.species, pet.mood, frameIndex) * pixelSize;
+
   const interactive = !!onClick && !disabled;
 
   const variantAura =
@@ -59,7 +75,7 @@ export function PetSprite({
         frames={frames}
         palette={palette}
         pixelSize={pixelSize}
-        frameDurationMs={pet.mood === "sleeping" ? 1200 : 420}
+        frameIndex={frameIndex}
       />
       {equippedAccessories.map((a) => {
         const offset = a.offsets[pet.species];
@@ -73,7 +89,7 @@ export function PetSprite({
             style={{
               top: offset.top,
               left: offset.left,
-              transform: "translate(-50%, 0)",
+              transform: `translate(calc(-50% + ${accessoryDx}px), 0)`,
             }}
           />
         );
