@@ -594,26 +594,33 @@ ACCESSORIES.push(...WALLPAPER_SKINS);
 
 // ---------- CUSTOM CURSORS ----------
 
+export const CURSOR_VIEWBOX = 32;
+
 /**
- * Build a CSS cursor value from an inline SVG. The SVG must be encoded so
- * browsers accept it in `data:image/svg+xml;utf8,…`. We keep the sprites
- * tiny (16×16) so the cursor reads as pixel art.
+ * Build a CSS cursor value from an inline SVG. We render sprites on a 32×32
+ * canvas (the safe max across browsers/OS) with bold black outlines so the
+ * pointer stays visible on any LCD background.
  */
 function makeCursorCss(svgBody: string, hotspotX: number, hotspotY: number) {
   const encoded = encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'>${svgBody}</svg>`
+    `<svg xmlns='http://www.w3.org/2000/svg' width='${CURSOR_VIEWBOX}' height='${CURSOR_VIEWBOX}' viewBox='0 0 ${CURSOR_VIEWBOX} ${CURSOR_VIEWBOX}' shape-rendering='crispEdges'>${svgBody}</svg>`
   );
   return `url("data:image/svg+xml;utf8,${encoded}") ${hotspotX} ${hotspotY}, auto`;
 }
 
 const HEART_SVG =
-  "<path fill='%23ff4fa3' d='M2 5h2v1H2zm2-1h2v1H4zm2 1h2v1H6zm2-1h2v1H8zm2 1h2v1h-2zM2 6h1v1H2zm10 0h1v1h-1zM3 7h1v1H3zm8 0h1v1h-1zM4 8h1v1H4zm6 0h1v1h-1zM5 9h1v1H5zm4 0h1v1H9zM6 10h1v1H6zm2 0h1v1H8zM7 11h1v1H7z'/>";
+  "<path d='M4 0 L12 0 L12 4 L20 4 L20 0 L28 0 L28 4 L32 4 L32 16 L28 16 L28 20 L24 20 L24 24 L20 24 L20 28 L12 28 L12 24 L8 24 L8 20 L4 20 L4 16 L0 16 L0 4 L4 4 Z' fill='#ff4fa3' stroke='#000000' stroke-width='2' stroke-linejoin='miter'/>";
 
 const STAR_SVG =
-  "<path fill='%23ffe14d' d='M7 1h2v2H7zM6 3h4v2H6zM4 5h8v2H4zM2 7h12v2H2zM4 9h2v2H4zm6 0h2v2h-2zM3 11h2v2H3zm8 0h2v2h-2z'/>";
+  "<path d='M16 2 L20 12 L30 13 L22 19 L26 30 L16 24 L6 30 L10 19 L2 13 L12 12 Z' fill='#ffe14d' stroke='#000000' stroke-width='2' stroke-linejoin='miter'/>";
 
 const SWORD_SVG =
-  "<path fill='%234de1ff' d='M13 1h2v2h-2zM12 3h2v1h-2zM11 4h2v1h-2zM10 5h2v1h-2zM9 6h2v1H9zM8 7h2v1H8zM7 8h2v1H7zM6 9h2v1H6zM5 10h2v1H5zM3 11h3v1H3zM1 12h3v1H1zM2 13h2v2H2z'/><path fill='%23ff4fa3' d='M5 9h1v1H5zm0 2h1v1H5z'/>";
+  "<g stroke='#000000' stroke-width='2' stroke-linejoin='miter'>" +
+  "<rect x='14' y='2' width='4' height='20' fill='#4de1ff'/>" +
+  "<rect x='8' y='20' width='16' height='3' fill='#ff4fa3'/>" +
+  "<rect x='14' y='23' width='4' height='5' fill='#8a5a00'/>" +
+  "<rect x='12' y='28' width='8' height='3' fill='#ffe14d'/>" +
+  "</g>";
 
 const CURSOR_SKINS: CursorSkin[] = [
   {
@@ -622,7 +629,7 @@ const CURSOR_SKINS: CursorSkin[] = [
     nameKey: "curHeart",
     price: 40,
     style: {
-      css: makeCursorCss(HEART_SVG, 7, 7),
+      css: makeCursorCss(HEART_SVG, 16, 28),
       previewSvg: HEART_SVG,
     },
   },
@@ -632,7 +639,7 @@ const CURSOR_SKINS: CursorSkin[] = [
     nameKey: "curStar",
     price: 50,
     style: {
-      css: makeCursorCss(STAR_SVG, 8, 8),
+      css: makeCursorCss(STAR_SVG, 16, 2),
       previewSvg: STAR_SVG,
     },
   },
@@ -642,7 +649,7 @@ const CURSOR_SKINS: CursorSkin[] = [
     nameKey: "curSword",
     price: 80,
     style: {
-      css: makeCursorCss(SWORD_SVG, 2, 13),
+      css: makeCursorCss(SWORD_SVG, 16, 2),
       previewSvg: SWORD_SVG,
     },
   },

@@ -13,6 +13,7 @@ import type { Cosmetics } from "@/lib/storage/schema";
 import { cn } from "@/lib/utils";
 import {
   ACCESSORIES,
+  CURSOR_VIEWBOX,
   SLOT_ORDER,
   isButtonSkin,
   isCaseSkin,
@@ -306,7 +307,7 @@ function ShopCard({
             className="flex h-10 w-10 items-center justify-center border-2 border-lcd-light/40 bg-lcd-bg"
             aria-hidden
             dangerouslySetInnerHTML={{
-              __html: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16' shape-rendering='crispEdges'>${item.style.previewSvg}</svg>`,
+              __html: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 ${CURSOR_VIEWBOX} ${CURSOR_VIEWBOX}' shape-rendering='crispEdges'>${item.style.previewSvg}</svg>`,
             }}
           />
         ) : (
