@@ -162,8 +162,26 @@ export interface Dictionary {
     daycareOn: string;
     daycareOff: string;
     shop: string;
+    photobooth: string;
     showcase: string;
     showcaseEmpty: string;
+  };
+  photobooth: {
+    title: string;
+    subtitle: string;
+    share: string;
+    shareTitle: string;
+    shareFailed: string;
+    download: string;
+    downloaded: string;
+    tagline: string;
+    ageLabel: string;
+    stageLabel: string;
+    moodLabel: string;
+    statsTitle: string;
+    minuteShort: string;
+    hourShort: string;
+    footer: string;
   };
   shop: {
     title: string;

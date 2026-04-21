@@ -69,7 +69,8 @@ import { AchievementBanner } from "./AchievementBanner";
 import type { Achievement } from "@/lib/game/types";
 import { DaycareDialog } from "./DaycareDialog";
 import { ShopDialog } from "./ShopDialog";
-import { LineChart, Coins, HeartPulse } from "lucide-react";
+import { PhotoboothDialog } from "./PhotoboothDialog";
+import { LineChart, Coins, HeartPulse, Camera } from "lucide-react";
 import { ACHIEVEMENTS } from "@/lib/game/achievements";
 import { hasEvolved } from "@/lib/game/lifecycle";
 import { cn } from "@/lib/utils";
@@ -97,6 +98,7 @@ function StatusPanel({
   onOpenHistory,
   onOpenDaycare,
   onOpenShop,
+  onOpenPhotobooth,
   dict,
 }: {
   achievementCount: number;
@@ -110,6 +112,7 @@ function StatusPanel({
   onOpenHistory: () => void;
   onOpenDaycare: () => void;
   onOpenShop: () => void;
+  onOpenPhotobooth: () => void;
   dict: Dictionary;
 }) {
   return (
@@ -178,6 +181,21 @@ function StatusPanel({
               {dict.status.history}
             </span>
           </div>
+        </button>
+        <button
+          type="button"
+          onClick={onOpenPhotobooth}
+          className="flex w-full items-center justify-between border-2 border-lcd-light/40 bg-lcd-dim/40 p-3 transition-colors hover:border-accent-pink"
+        >
+          <div className="flex items-center gap-2">
+            <Camera className="h-4 w-4 text-accent-pink" />
+            <span className="text-[9px] uppercase tracking-widest text-lcd-light">
+              {dict.status.photobooth}
+            </span>
+          </div>
+          <span aria-hidden className="text-sm text-accent-pink">
+            📸
+          </span>
         </button>
         <button
           type="button"
@@ -261,6 +279,7 @@ export function Game() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [daycareOpen, setDaycareOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [photoboothOpen, setPhotoboothOpen] = useState(false);
   const [renameOpen, setRenameOpen] = useState(false);
   const [patBouncing, setPatBouncing] = useState(false);
   const lastPatAtRef = useRef(0);
@@ -631,6 +650,7 @@ export function Game() {
               onOpenHistory={() => setHistoryOpen(true)}
               onOpenDaycare={() => setDaycareOpen(true)}
               onOpenShop={() => setShopOpen(true)}
+              onOpenPhotobooth={() => setPhotoboothOpen(true)}
               dict={dict}
             />
           </aside>
@@ -762,6 +782,13 @@ export function Game() {
         onEquip={actions.equipAccessory}
         onUnequip={actions.unequipSlot}
         onUsePotion={actions.usePotion}
+      />
+
+      <PhotoboothDialog
+        open={photoboothOpen}
+        onOpenChange={setPhotoboothOpen}
+        pet={pet}
+        cosmetics={cosmetics}
       />
 
       {evolvedStage && <EvolutionFlash stage={evolvedStage} />}
