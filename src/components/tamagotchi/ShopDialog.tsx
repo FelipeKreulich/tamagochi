@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import {
   ACCESSORIES,
   SLOT_ORDER,
+  isButtonSkin,
   type Accessory,
   type AccessorySlot,
 } from "./accessories/catalog";
@@ -44,6 +45,7 @@ export function ShopDialog({
     hat: dict.shop.slotHat,
     glasses: dict.shop.slotGlasses,
     ribbon: dict.shop.slotRibbon,
+    buttons: dict.shop.slotButtons,
   };
 
   const grouped = SLOT_ORDER.map((slot) => ({
@@ -166,11 +168,25 @@ function ShopCard({
       )}
     >
       <div className="flex h-12 w-full items-center justify-center">
-        <AccessorySprite
-          frame={item.frame}
-          palette={item.palette}
-          pixelSize={3}
-        />
+        {isButtonSkin(item) ? (
+          <span
+            className="flex h-10 w-10 items-center justify-center rounded-full border-[2px] text-xs font-bold"
+            style={{
+              background: item.style.background,
+              borderColor: item.style.border,
+              color: item.style.letterColor,
+              boxShadow: `3px 3px 0 0 ${item.style.shadowColor}`,
+            }}
+          >
+            A
+          </span>
+        ) : (
+          <AccessorySprite
+            frame={item.frame}
+            palette={item.palette}
+            pixelSize={3}
+          />
+        )}
       </div>
       <p className="text-center text-[8px] uppercase tracking-widest text-lcd-light">
         {labels.itemName}

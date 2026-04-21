@@ -176,6 +176,7 @@ const dict: Dictionary = {
     slotHat: "CHAPEUS",
     slotGlasses: "OCULOS",
     slotRibbon: "FITAS",
+    slotButtons: "BOTOES",
     buy: "COMPRAR",
     own: "TEM",
     equip: "USAR",
@@ -192,6 +193,10 @@ const dict: Dictionary = {
       ribbonBow: "LACINHO",
       ribbonCollar: "COLEIRA",
       ribbonTie: "GRAVATA",
+      btnCyan: "CIANO",
+      btnGold: "DOURADO",
+      btnRetro: "RETRO",
+      btnDark: "SOMBRIO",
     },
   },
   daycare: {

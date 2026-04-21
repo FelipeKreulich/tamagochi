@@ -19,6 +19,7 @@ export interface Cosmetics {
     hat: string | null;
     glasses: string | null;
     ribbon: string | null;
+    buttons: string | null;
   };
 }
 
@@ -41,7 +42,7 @@ export interface SaveStateV1 {
 
 export const INITIAL_COSMETICS: Cosmetics = {
   owned: [],
-  equipped: { hat: null, glasses: null, ribbon: null },
+  equipped: { hat: null, glasses: null, ribbon: null, buttons: null },
 };
 
 export const DEFAULT_DAYCARE_RULES: DaycareRules = {
@@ -64,7 +65,7 @@ export const INITIAL_SAVE_STATE: SaveState = {
   coins: 0,
   cosmetics: {
     owned: [],
-    equipped: { hat: null, glasses: null, ribbon: null },
+    equipped: { hat: null, glasses: null, ribbon: null, buttons: null },
   },
   settings: {
     muted: false,

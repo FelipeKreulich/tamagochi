@@ -1,18 +1,36 @@
 import type { Species } from "@/lib/game/types";
 import type { PixelGrid, SpritePalette } from "../Sprite";
 
-export type AccessorySlot = "hat" | "glasses" | "ribbon";
+export type AccessorySlot = "hat" | "glasses" | "ribbon" | "buttons";
 
 export interface AccessoryOffset {
   top: string;
   left: string;
 }
 
-export interface Accessory {
+export interface ButtonSkinStyle {
+  /** CSS background for the dome (gradient recommended). */
+  background: string;
+  /** Border color of the button. */
+  border: string;
+  /** Text color for the A/B/C letter. */
+  letterColor: string;
+  /** Color used for the drop shadow block. */
+  shadowColor: string;
+  /** Color of the inner ring outline. */
+  innerRing: string;
+  /** Hover border override (optional). */
+  hoverBorder?: string;
+}
+
+interface AccessoryBase {
   id: string;
-  slot: AccessorySlot;
   nameKey: string;
   price: number;
+}
+
+export interface PetAccessory extends AccessoryBase {
+  slot: "hat" | "glasses" | "ribbon";
   palette: SpritePalette;
   frame: PixelGrid;
   /**
@@ -24,6 +42,31 @@ export interface Accessory {
   /** Pixel size relative to the pet's pixelSize (multiplier). */
   scale?: number;
 }
+
+export interface ButtonSkin extends AccessoryBase {
+  slot: "buttons";
+  style: ButtonSkinStyle;
+}
+
+export type Accessory = PetAccessory | ButtonSkin;
+
+export function isPetAccessory(a: Accessory): a is PetAccessory {
+  return a.slot !== "buttons";
+}
+
+export function isButtonSkin(a: Accessory): a is ButtonSkin {
+  return a.slot === "buttons";
+}
+
+export const DEFAULT_BUTTON_STYLE: ButtonSkinStyle = {
+  background:
+    "radial-gradient(circle at 30% 25%,#ffc1dc,#ff4fa3 55%,#a62368)",
+  border: "var(--lcd-light)",
+  letterColor: "var(--lcd-dark)",
+  shadowColor: "var(--lcd-dim)",
+  innerRing: "rgba(255,79,163,0.5)",
+  hoverBorder: "var(--accent-cyan)",
+};
 
 const _ = 0;
 const A = 1; // primary accessory color
@@ -219,6 +262,73 @@ export const ACCESSORIES: Accessory[] = [
   },
 ];
 
+// ---------- BUTTON SKINS ----------
+
+const BUTTON_SKINS: ButtonSkin[] = [
+  {
+    id: "btn_cyan",
+    slot: "buttons",
+    nameKey: "btnCyan",
+    price: 50,
+    style: {
+      background:
+        "radial-gradient(circle at 30% 25%,#c7f7ff,#4de1ff 55%,#1a6f87)",
+      border: "var(--lcd-light)",
+      letterColor: "#0a0f0a",
+      shadowColor: "var(--lcd-dim)",
+      innerRing: "rgba(77,225,255,0.55)",
+      hoverBorder: "var(--accent-pink)",
+    },
+  },
+  {
+    id: "btn_gold",
+    slot: "buttons",
+    nameKey: "btnGold",
+    price: 120,
+    style: {
+      background:
+        "radial-gradient(circle at 30% 25%,#fff2b8,#ffd24d 55%,#8a5a00)",
+      border: "#fff6c7",
+      letterColor: "#3a2a00",
+      shadowColor: "#6a4a00",
+      innerRing: "rgba(255,210,77,0.65)",
+      hoverBorder: "#ffffff",
+    },
+  },
+  {
+    id: "btn_retro",
+    slot: "buttons",
+    nameKey: "btnRetro",
+    price: 80,
+    style: {
+      background:
+        "radial-gradient(circle at 30% 25%,#d4f8c4,#7cf074 55%,#3a8a34)",
+      border: "var(--lcd-dark)",
+      letterColor: "#0a0f0a",
+      shadowColor: "var(--lcd-bg)",
+      innerRing: "rgba(124,240,116,0.6)",
+      hoverBorder: "var(--accent-pink)",
+    },
+  },
+  {
+    id: "btn_dark",
+    slot: "buttons",
+    nameKey: "btnDark",
+    price: 70,
+    style: {
+      background:
+        "radial-gradient(circle at 30% 25%,#3a1320,#14050a 55%,#000000)",
+      border: "#ff2a4d",
+      letterColor: "#ff4d6d",
+      shadowColor: "#300014",
+      innerRing: "rgba(255,42,77,0.55)",
+      hoverBorder: "#ffffff",
+    },
+  },
+];
+
+ACCESSORIES.push(...BUTTON_SKINS);
+
 export const ACCESSORIES_BY_ID = new Map(
   ACCESSORIES.map((a) => [a.id, a])
 );
@@ -228,4 +338,14 @@ export function accessoryById(id: string | null | undefined): Accessory | null {
   return ACCESSORIES_BY_ID.get(id) ?? null;
 }
 
-export const SLOT_ORDER: AccessorySlot[] = ["hat", "glasses", "ribbon"];
+export function buttonSkinById(id: string | null | undefined): ButtonSkin | null {
+  const a = accessoryById(id);
+  return a && isButtonSkin(a) ? a : null;
+}
+
+export const SLOT_ORDER: AccessorySlot[] = [
+  "hat",
+  "glasses",
+  "ribbon",
+  "buttons",
+];

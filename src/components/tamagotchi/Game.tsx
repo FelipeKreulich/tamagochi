@@ -42,6 +42,10 @@ import { LocaleToggle } from "./LocaleToggle";
 import { FullscreenToggle } from "./FullscreenToggle";
 import { LcdScreen } from "./LcdScreen";
 import { DpadButtons } from "./DpadButtons";
+import {
+  DEFAULT_BUTTON_STYLE,
+  buttonSkinById,
+} from "./accessories/catalog";
 import { AchievementsDialog } from "./AchievementsDialog";
 import { AchievementShowcase } from "./AchievementShowcase";
 import { ParticleBurst, type ParticleKind } from "./Particles";
@@ -580,7 +584,15 @@ export function Game() {
           </LcdScreen>
 
           {pet && pet.isAlive && (
-            <DpadButtons onA={handleA} onB={handleB} onC={handleC} />
+            <DpadButtons
+              onA={handleA}
+              onB={handleB}
+              onC={handleC}
+              style={
+                buttonSkinById(cosmetics.equipped.buttons)?.style ??
+                DEFAULT_BUTTON_STYLE
+              }
+            />
           )}
         </section>
 

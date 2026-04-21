@@ -172,6 +172,7 @@ export interface Dictionary {
     slotHat: string;
     slotGlasses: string;
     slotRibbon: string;
+    slotButtons: string;
     buy: string;
     own: string;
     equip: string;
@@ -187,7 +188,11 @@ export interface Dictionary {
       | "glassesStar"
       | "ribbonBow"
       | "ribbonCollar"
-      | "ribbonTie",
+      | "ribbonTie"
+      | "btnCyan"
+      | "btnGold"
+      | "btnRetro"
+      | "btnDark",
       string
     >;
   };

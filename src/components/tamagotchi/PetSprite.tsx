@@ -8,8 +8,9 @@ import { getSpriteFor, poopFrames, poopPalette } from "./sprites";
 import { AccessorySprite } from "./accessories/AccessorySprite";
 import {
   accessoryById,
-  type Accessory,
+  isPetAccessory,
   type AccessorySlot,
+  type PetAccessory,
 } from "./accessories/catalog";
 import { frameOffsetX } from "./accessories/frameOffsets";
 
@@ -63,10 +64,13 @@ export function PetSprite({
       ? "drop-shadow-[0_0_6px_rgba(255,42,77,0.5)]"
       : "";
 
-  const equippedAccessories: Accessory[] = equipped
+  const equippedAccessories: PetAccessory[] = equipped
     ? (["hat", "glasses", "ribbon"] as AccessorySlot[])
         .map((slot) => accessoryById(equipped[slot]))
-        .filter((a): a is Accessory => a !== null && pet.stage !== "egg")
+        .filter(
+          (a): a is PetAccessory =>
+            a !== null && isPetAccessory(a) && pet.stage !== "egg"
+        )
     : [];
 
   const inner = (
