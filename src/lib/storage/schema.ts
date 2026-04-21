@@ -23,6 +23,8 @@ export interface Cosmetics {
     buttons: string | null;
     palette: string | null;
     case: string | null;
+    wallpaper: string | null;
+    cursor: string | null;
   };
 }
 
@@ -53,6 +55,8 @@ export const INITIAL_COSMETICS: Cosmetics = {
     buttons: null,
     palette: null,
     case: null,
+    wallpaper: null,
+    cursor: null,
   },
 };
 
@@ -84,6 +88,8 @@ export const INITIAL_SAVE_STATE: SaveState = {
       buttons: null,
       palette: null,
       case: null,
+      wallpaper: null,
+      cursor: null,
     },
   },
   settings: {

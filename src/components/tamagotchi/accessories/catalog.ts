@@ -7,7 +7,9 @@ export type AccessorySlot =
   | "ribbon"
   | "buttons"
   | "palette"
-  | "case";
+  | "case"
+  | "wallpaper"
+  | "cursor";
 
 export interface AccessoryOffset {
   top: string;
@@ -86,11 +88,44 @@ export interface CaseSkin extends AccessoryBase {
   style: CaseStyle;
 }
 
+export type WallpaperPattern = "dots" | "waves" | "rain" | "scanlines";
+
+export interface WallpaperStyle {
+  /** Which pattern to render inside the LCD. */
+  pattern: WallpaperPattern;
+  /** Ink color of the pattern (hex or CSS var). */
+  color: string;
+  /** Layer opacity (0..1). */
+  opacity: number;
+}
+
+export interface WallpaperSkin extends AccessoryBase {
+  slot: "wallpaper";
+  style: WallpaperStyle;
+}
+
+export interface CursorStyle {
+  /**
+   * CSS cursor value (typically `url("data:image/svg+xml;utf8,...") x y, auto`).
+   * Pre-baked here so the hook can apply it directly.
+   */
+  css: string;
+  /** Tiny SVG markup used for the preview card inside the shop. */
+  previewSvg: string;
+}
+
+export interface CursorSkin extends AccessoryBase {
+  slot: "cursor";
+  style: CursorStyle;
+}
+
 export type Accessory =
   | PetAccessory
   | ButtonSkin
   | PaletteSkin
-  | CaseSkin;
+  | CaseSkin
+  | WallpaperSkin
+  | CursorSkin;
 
 export function isPetAccessory(a: Accessory): a is PetAccessory {
   return a.slot === "hat" || a.slot === "glasses" || a.slot === "ribbon";
@@ -106,6 +141,14 @@ export function isPaletteSkin(a: Accessory): a is PaletteSkin {
 
 export function isCaseSkin(a: Accessory): a is CaseSkin {
   return a.slot === "case";
+}
+
+export function isWallpaperSkin(a: Accessory): a is WallpaperSkin {
+  return a.slot === "wallpaper";
+}
+
+export function isCursorSkin(a: Accessory): a is CursorSkin {
+  return a.slot === "cursor";
 }
 
 export const DEFAULT_BUTTON_STYLE: ButtonSkinStyle = {
@@ -514,6 +557,99 @@ const CASE_SKINS: CaseSkin[] = [
 
 ACCESSORIES.push(...CASE_SKINS);
 
+// ---------- LCD WALLPAPERS ----------
+
+const WALLPAPER_SKINS: WallpaperSkin[] = [
+  {
+    id: "wp_dots",
+    slot: "wallpaper",
+    nameKey: "wpDots",
+    price: 40,
+    style: { pattern: "dots", color: "var(--lcd-light)", opacity: 0.18 },
+  },
+  {
+    id: "wp_waves",
+    slot: "wallpaper",
+    nameKey: "wpWaves",
+    price: 60,
+    style: { pattern: "waves", color: "var(--lcd-light)", opacity: 0.22 },
+  },
+  {
+    id: "wp_rain",
+    slot: "wallpaper",
+    nameKey: "wpRain",
+    price: 70,
+    style: { pattern: "rain", color: "var(--accent-cyan)", opacity: 0.35 },
+  },
+  {
+    id: "wp_scanlines",
+    slot: "wallpaper",
+    nameKey: "wpScanlines",
+    price: 30,
+    style: { pattern: "scanlines", color: "var(--lcd-dim)", opacity: 0.55 },
+  },
+];
+
+ACCESSORIES.push(...WALLPAPER_SKINS);
+
+// ---------- CUSTOM CURSORS ----------
+
+/**
+ * Build a CSS cursor value from an inline SVG. The SVG must be encoded so
+ * browsers accept it in `data:image/svg+xml;utf8,…`. We keep the sprites
+ * tiny (16×16) so the cursor reads as pixel art.
+ */
+function makeCursorCss(svgBody: string, hotspotX: number, hotspotY: number) {
+  const encoded = encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'>${svgBody}</svg>`
+  );
+  return `url("data:image/svg+xml;utf8,${encoded}") ${hotspotX} ${hotspotY}, auto`;
+}
+
+const HEART_SVG =
+  "<path fill='%23ff4fa3' d='M2 5h2v1H2zm2-1h2v1H4zm2 1h2v1H6zm2-1h2v1H8zm2 1h2v1h-2zM2 6h1v1H2zm10 0h1v1h-1zM3 7h1v1H3zm8 0h1v1h-1zM4 8h1v1H4zm6 0h1v1h-1zM5 9h1v1H5zm4 0h1v1H9zM6 10h1v1H6zm2 0h1v1H8zM7 11h1v1H7z'/>";
+
+const STAR_SVG =
+  "<path fill='%23ffe14d' d='M7 1h2v2H7zM6 3h4v2H6zM4 5h8v2H4zM2 7h12v2H2zM4 9h2v2H4zm6 0h2v2h-2zM3 11h2v2H3zm8 0h2v2h-2z'/>";
+
+const SWORD_SVG =
+  "<path fill='%234de1ff' d='M13 1h2v2h-2zM12 3h2v1h-2zM11 4h2v1h-2zM10 5h2v1h-2zM9 6h2v1H9zM8 7h2v1H8zM7 8h2v1H7zM6 9h2v1H6zM5 10h2v1H5zM3 11h3v1H3zM1 12h3v1H1zM2 13h2v2H2z'/><path fill='%23ff4fa3' d='M5 9h1v1H5zm0 2h1v1H5z'/>";
+
+const CURSOR_SKINS: CursorSkin[] = [
+  {
+    id: "cur_heart",
+    slot: "cursor",
+    nameKey: "curHeart",
+    price: 40,
+    style: {
+      css: makeCursorCss(HEART_SVG, 7, 7),
+      previewSvg: HEART_SVG,
+    },
+  },
+  {
+    id: "cur_star",
+    slot: "cursor",
+    nameKey: "curStar",
+    price: 50,
+    style: {
+      css: makeCursorCss(STAR_SVG, 8, 8),
+      previewSvg: STAR_SVG,
+    },
+  },
+  {
+    id: "cur_sword",
+    slot: "cursor",
+    nameKey: "curSword",
+    price: 80,
+    style: {
+      css: makeCursorCss(SWORD_SVG, 2, 13),
+      previewSvg: SWORD_SVG,
+    },
+  },
+];
+
+ACCESSORIES.push(...CURSOR_SKINS);
+
 export const DEFAULT_CASE_STYLE: CaseStyle = {
   background:
     "linear-gradient(180deg,#1b3424 0%,#0a120d 40%,#0a120d 60%,#1b3424 100%)",
@@ -549,6 +685,20 @@ export function caseSkinById(id: string | null | undefined): CaseSkin | null {
   return a && isCaseSkin(a) ? a : null;
 }
 
+export function wallpaperSkinById(
+  id: string | null | undefined
+): WallpaperSkin | null {
+  const a = accessoryById(id);
+  return a && isWallpaperSkin(a) ? a : null;
+}
+
+export function cursorSkinById(
+  id: string | null | undefined
+): CursorSkin | null {
+  const a = accessoryById(id);
+  return a && isCursorSkin(a) ? a : null;
+}
+
 export const SLOT_ORDER: AccessorySlot[] = [
   "hat",
   "glasses",
@@ -556,4 +706,6 @@ export const SLOT_ORDER: AccessorySlot[] = [
   "buttons",
   "palette",
   "case",
+  "wallpaper",
+  "cursor",
 ];

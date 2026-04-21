@@ -176,6 +176,8 @@ export interface Dictionary {
     slotPotions: string;
     slotPalette: string;
     slotCase: string;
+    slotWallpaper: string;
+    slotCursor: string;
     potions: Record<
       "potionElixir" | "potionShield" | "potionGrowth" | "potionLuck",
       { name: string; desc: string }
@@ -210,7 +212,14 @@ export interface Dictionary {
       | "caseFlamingo"
       | "caseChrome"
       | "caseWood"
-      | "caseClear",
+      | "caseClear"
+      | "wpDots"
+      | "wpWaves"
+      | "wpRain"
+      | "wpScanlines"
+      | "curHeart"
+      | "curStar"
+      | "curSword",
       string
     >;
   };

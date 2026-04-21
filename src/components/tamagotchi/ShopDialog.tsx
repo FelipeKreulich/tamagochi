@@ -16,10 +16,13 @@ import {
   SLOT_ORDER,
   isButtonSkin,
   isCaseSkin,
+  isCursorSkin,
   isPaletteSkin,
+  isWallpaperSkin,
   type Accessory,
   type AccessorySlot,
 } from "./accessories/catalog";
+import { LcdWallpaper } from "./LcdWallpaper";
 import { AccessorySprite } from "./accessories/AccessorySprite";
 import { POTIONS, type Potion } from "@/lib/game/potions";
 import { toast } from "sonner";
@@ -54,6 +57,8 @@ export function ShopDialog({
     buttons: dict.shop.slotButtons,
     palette: dict.shop.slotPalette,
     case: dict.shop.slotCase,
+    wallpaper: dict.shop.slotWallpaper,
+    cursor: dict.shop.slotCursor,
   };
 
   const grouped = SLOT_ORDER.map((slot) => ({
@@ -292,6 +297,18 @@ function ShopCard({
               style={{ border: `1px solid ${item.style.innerBorder}` }}
             />
           </span>
+        ) : isWallpaperSkin(item) ? (
+          <span className="relative block h-10 w-12 overflow-hidden border-2 border-lcd-light/40 bg-lcd-bg">
+            <LcdWallpaper style={item.style} />
+          </span>
+        ) : isCursorSkin(item) ? (
+          <span
+            className="flex h-10 w-10 items-center justify-center border-2 border-lcd-light/40 bg-lcd-bg"
+            aria-hidden
+            dangerouslySetInnerHTML={{
+              __html: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16' shape-rendering='crispEdges'>${item.style.previewSvg}</svg>`,
+            }}
+          />
         ) : (
           <AccessorySprite
             frame={item.frame}

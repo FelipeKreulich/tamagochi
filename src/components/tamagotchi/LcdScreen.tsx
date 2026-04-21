@@ -5,18 +5,22 @@ import { cn } from "@/lib/utils";
 import {
   DEFAULT_CASE_STYLE,
   type CaseStyle,
+  type WallpaperStyle,
 } from "./accessories/catalog";
+import { LcdWallpaper } from "./LcdWallpaper";
 
 interface LcdScreenProps {
   children: ReactNode;
   className?: string;
   caseStyle?: CaseStyle;
+  wallpaperStyle?: WallpaperStyle | null;
 }
 
 export function LcdScreen({
   children,
   className,
   caseStyle = DEFAULT_CASE_STYLE,
+  wallpaperStyle = null,
 }: LcdScreenProps) {
   return (
     <div className={cn("relative w-full", className)}>
@@ -33,6 +37,7 @@ export function LcdScreen({
           style={{ borderColor: caseStyle.innerBorder }}
         >
           <div className="lcd-glow relative overflow-hidden">
+            {wallpaperStyle && <LcdWallpaper style={wallpaperStyle} />}
             <div className="lcd-scanlines absolute inset-0 z-10 opacity-60" />
             <div className="relative z-20 p-6 sm:p-8">{children}</div>
           </div>

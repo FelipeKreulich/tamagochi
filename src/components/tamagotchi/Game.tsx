@@ -47,8 +47,10 @@ import {
   DEFAULT_CASE_STYLE,
   buttonSkinById,
   caseSkinById,
+  wallpaperSkinById,
 } from "./accessories/catalog";
 import { usePaletteOverride } from "@/hooks/usePaletteOverride";
+import { useCursorOverride } from "@/hooks/useCursorOverride";
 import { AchievementsDialog } from "./AchievementsDialog";
 import { AchievementShowcase } from "./AchievementShowcase";
 import { ParticleBurst, type ParticleKind } from "./Particles";
@@ -233,6 +235,7 @@ export function Game() {
   const timeOfDay = useTimeOfDay();
   const weather = useWeather();
   usePaletteOverride(tama.cosmetics.equipped.palette);
+  useCursorOverride(tama.cosmetics.equipped.cursor);
 
   const onStartScreen = !pet;
   const showIntroMusic = !hydrated || onStartScreen || (pet && !pet.isAlive);
@@ -547,6 +550,9 @@ export function Game() {
             className="max-w-2xl"
             caseStyle={
               caseSkinById(cosmetics.equipped.case)?.style ?? DEFAULT_CASE_STYLE
+            }
+            wallpaperStyle={
+              wallpaperSkinById(cosmetics.equipped.wallpaper)?.style ?? null
             }
           >
             <div className="relative flex min-h-[260px] flex-col items-center justify-center gap-5 sm:min-h-[320px]">
